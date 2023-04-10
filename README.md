@@ -1,6 +1,7 @@
 # FaculRide
 
 Um sistema para unir universitários que oferecem e que buscam caronas!
+Feito utilizando React, Python e Postgresql.
 
 # Backlog do Produto
 
