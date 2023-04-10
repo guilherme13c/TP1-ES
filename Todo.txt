@@ -1,0 +1,49 @@
+# Backlog do Produto
+
+O usuário quer:
+	Criar (e excluir) sua conta
+	Oferecer uma carona
+	Pegar uma carona
+	Saber com que pessoas pega carona
+
+O caroneiro quer:
+	Ver as caronas disponíveis
+	Ver detalhes sobre a carona
+	Se comunicar com o motorista
+	Ser notificado de alterações na carona
+	Abandonar uma carona
+	História Épica: ver num mapa por onde passam as caronas próximas a ele
+
+O motorista quer:
+	Escolher a quem dá ou não carona
+	Excluir caroneiros da carona
+	Comunicar detalhes da carona
+	Modificar detalhes da carona
+
+
+# Backlog do Sprint
+
+Implementar interface com o banco de dados
+	Criar banco de dados
+	Implementar tabelas
+	Comunicar com as classes User e Ride
+
+Implementar classe User e métodos associados
+	Preencher e editar informações pessoais
+	Cadastrar caronas
+	Requisitar carona
+	Excluir conta
+	Enviar para e aprovar pedidos da classe Ride
+
+Implementar classe Ride e métodos associados
+	Preencher e modificar informações
+	Mostrar informações públicas da carona
+	Enviar pedidos e notificações aos usuários
+
+
+Implementar interface gráfica para o usuário
+	Cadastro e Login de usuário
+	Mostrar informações do usuário
+	Mostrar caronas do usuário
+	Mostrar amigos de carona do usuário
+	Requisitar carona
