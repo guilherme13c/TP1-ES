@@ -6,7 +6,7 @@ Feito utilizando React, Python e MySql.
 # Integrantes
 - Guilherme Soeiro de Carvalho Caporali
 - Vitor Fitzherbert Souza
-- Luiz Paulo
+- Luiz Paulo Santos Ribeiro
 - Matheus
 
 # Backlog do Produto
