@@ -1,5 +1,5 @@
 import sqlite3
-from DataStructures import *
+from backend.DataStructures import *
 
 class DatabaseInterface:
     __instance = None
