@@ -1,5 +1,5 @@
 import sqlite3
-from DataStructures import all
+from DataStructures import *
 
 class DatabaseInterface:
     __instance = None
@@ -18,210 +18,266 @@ class DatabaseInterface:
         self.c = self.conn.cursor()
 
         # create users table
-        self.c.execute('''CREATE TABLE IF NOT EXISTS users
-                     (user_id TEXT PRIMARY KEY,
-                      login TEXT,
-                      password TEXT,
-                      name TEXT,
-                      gender TEXT,
-                      course TEXT)''')
+        self.c.execute("""
+                        CREATE TABLE IF NOT EXISTS users
+                        (email TEXT PRIMARY KEY,
+                        password TEXT,
+                        name TEXT,
+                        gender TEXT,
+                        course TEXT,
+                        neighborhood TEXT)
+                        """)
 
         # create companions table
-        self.c.execute('''CREATE TABLE IF NOT EXISTS companions
-                     (user_1 TEXT,
-                      user_2 TEXT,
-                      counter INTEGER)''')
+        self.c.execute("""
+                        CREATE TABLE IF NOT EXISTS companions
+                        (user_1 TEXT,
+                        user_2 TEXT,
+                        counter INTEGER,
+                        FOREIGN KEY (user_1) REFERENCES users(user_id) ON DELETE CASCADE,
+                        FOREIGN KEY (user_2) REFERENCES users(user_id) ON DELETE CASCADE)
+                        """)
 
         # create rides table
-        self.c.execute('''CREATE TABLE IF NOT EXISTS rides
-                     (ride_id TEXT PRIMARY KEY,
-                      driver TEXT,
-                      schedule TEXT,
-                      anouncements TEXT,
-                      chat_channel TEXT,
-                      seats_offered INTEGER)''')
+        self.c.execute("""
+                        CREATE TABLE IF NOT EXISTS rides
+                        (ride_id TEXT PRIMARY KEY,
+                        driver_id TEXT,
+                        orig TEXT,
+                        dest TEXT,
+                        time TIME,
+                        mon BIT,
+                        thu BIT,
+                        wed BIT,
+                        tue BIT,
+                        fri BIT,
+                        seats_offered INTEGER,
+                        anouncements TEXT,
+                        chat_channel TEXT),
+                        FOREIGN KEY (driver_id) REFERENCES users(email) ON DELETE CASCADE
+                        """)
 
         # create user_rides table
-        self.c.execute('''CREATE TABLE IF NOT EXISTS user_rides
-                     (user TEXT,
-                      ride TEXT)''')
+        self.c.execute("""
+                        CREATE TABLE IF NOT EXISTS user_rides
+                        (user_id TEXT,
+                        ride_id TEXT),
+                        FOREIGN KEY (user_id) REFERENCES users(email) ON DELETE CASCADE,
+                        FOREIGN KEY (ride_id) REFERENCES rides(ride_id) ON DELETE CASCADE
+                        """)
 
         # create tags table
-        self.c.execute('''CREATE TABLE IF NOT EXISTS tags
-                     (tag_id TEXT PRIMARY KEY,
-                      description TEXT)''')
+        self.c.execute("""
+                        CREATE TABLE IF NOT EXISTS tags
+                        (tag_id TEXT PRIMARY KEY,
+                        description TEXT)
+                        """)
 
         # create ride_tags table
-        self.c.execute('''CREATE TABLE IF NOT EXISTS ride_tags
-                     (ride TEXT,
-                      tag TEXT)''')
+        self.c.execute("""
+                        CREATE TABLE IF NOT EXISTS ride_tags
+                        (ride_id TEXT,
+                        tag_id TEXT),
+                        FOREIGN KEY (ride_id) REFERENCES rides(ride_id) ON DELETE CASCADE,
+                        FOREIGN KEY (tag_id) REFERENCES tags(tag_id) ON DELETE CASCADE
+                        """)
+        
+        # creat requests table
+        self.c.execute("""
+                        CREATE TABLE IF NOT EXISTS requests
+                        (request_id INTEGER PRIMARY KEY
+                        ride_id TEXT,
+                        driver_id TEXT,
+                        rider_id TEXT,
+                        message TEXT),
+                        FOREIGN KEY (ride_id) REFERENCES rides(ride_id) ON DELETE CASCADE,
+                        FOREIGN KEY (driver_id) REFERENCES users(email) ON DELETE CASCADE,
+                        FOREIGN KEY (rider_id) REFERENCES users(email) ON DELETE CASCADE
+                        """)
         
         # set instance
         __instance = self
         
         self.__commit()
     
+    
+    #################################
     #### Adding data to database ####
+    #################################
     
-    def add_user(self, user):
-        new_user = (user.user_id, user.login, user.password, user.name, user.gender, user.course)
-        self.c.execute("INSERT INTO users (user_id, login, password, name, gender, course) VALUES (?, ?, ?)", new_user)
-        self.__commit()
     
-    def add_ride(self, ride):
-        new_ride = (ride.ride_id, ride.driver, ride.schedule, ride.anouncements, ride.chat_channel, ride.seats_offered)
-        self.c.execute("INSERT INTO rides (ride_id, driver, schedule, anouncements, chat_channel, seats_offered) VALUES (?, ?, ?)", new_ride)
+    def add_user(self, email, password, name, gender, course, neighborhood):
+        new_entry = (email, password, name, gender, course, neighborhood)
+        self.c.execute("INSERT INTO users (email, password, name, gender, course, neighborhood) VALUES (?, ?, ?, ?, ?, ?)", new_entry)
         self.__commit()
-        
-    def add_tag(self, tag):
-        new_tag = (user.tag_id, user.description)
-        self.c.execute("INSERT INTO tags (tag_id, description) VALUES (?, ?, ?)", new_tag)
-        self.__commit()
-        
-    def __count_new_companions__(self, new_user, ride):
+
+    def __count_new_companions(self, user_id, ride_id):
         
         # add each user already in ride to companions
-        c.execute("SELECT user FROM user_rides WHERE ride=?", (ride.ride_id))
-        companions = c.fetchall()
-        for old_user in companions:
-            
-            # first entry must be the lowest
-            if new_user[0] < old_user[0]:
-                id_1, id_2 = new_user[0], old_user[0]
-            else:
-                id_1, id_2 = old_user[0],  new_user[0]
+        c.execute("SELECT user_id FROM user_rides WHERE ride_id=?", (ride_id))
+        old_users_id = c.fetchall()
+        for old_user in old_users_id:
             
             # check if entry exist
-            c.execute("SELECT counter FROM companions WHERE user_1=? AND user_2=?", (id_1, id_2))
+            c.execute("SELECT * FROM companions WHERE (user_1=? AND user_2=?) OR (user_1=? AND user_2=?)", (user_id, old_user, old_user, user_id))
             entry = c.fetchone()
 
             # if entry do not exist, create one
-            if entry is not None:
-                self.c.execute("INSERT INTO companions (user_1, user_2, counter) VALUES (?, ?, ?)", (id_1, id_2, 1))
+            if entry is None:
+                self.c.execute("INSERT INTO companions (user_1, user_2, counter) VALUES (?, ?, ?)", (user_id, old_user, 1))
             # if entry exist, add 1 to counter
             else:
-                self.c.execute("UPDATE companions SET counter = ? WHERE user_1=? AND user_2=?", (entry[0]+1, user_1, user_2))
+                self.c.execute("UPDATE companions SET counter = ? WHERE user_1=? AND user_2=?", (entry[2]+1, entry[0], entry[1]))
     
-    def add_user_to_ride(self, user, ride):
-        self.__count_new_passager(user, ride)
-        new_passager = (user.user_id, ride.ride_id)
-        self.c.execute("INSERT INTO users (tag_id, description) VALUES (?, ?, ?)", new_passager)
+    def add_user_to_ride(self, user_id, ride_id):
+        self.__count_new_companions(user_id, ride_id)
+        new_entry = (user.user_id, ride.ride_id)
+        self.c.execute("INSERT INTO user_rides (user_id, ride_id) VALUES (?, ?)", new_entry)
+        self.__commit()
+     
+    def add_tag(self, tag_id, description=''):
+        new_entry = (tag_id, description)
+        self.c.execute("INSERT INTO tags (tag_id, description) VALUES (?, ?)", new_entry)
+        self.__commit()
+        
+    def add_tag_to_ride(ride_id, tag_id):
+        new_entry = (ride_id, tag_id)
+        self.c.execute("INSERT INTO ride_tags (ride_id, tag_id) VALUES (?, ?)", new_entry)
+        self.__commit()
+        
+    def add_ride(self, ride_id, driver_id, orig, dest, time, days, seats_offered, anouncements='', chat_channel='', tags=[]):
+        new_entry = (ride_id, driver_id, orig, dest, time, days[0], days[1], days[2], days[3], days[4], seats_offered, anouncements, chat_channel)
+        self.c.execute("""
+                        INSERT INTO rides 
+                        (ride_id, driver_id, orig, dest, time, mon, thu, wed, tue, fri, seats_offered, anouncements, chat_channel)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        """, new_entry)
+        for t in tags:
+            add_tag_to_ride(ride_id, t.tag_id)
+        add_user_to_ride(user_id, ride_id)
+        self.__commit()
+        
+    def add_request(self, request_id, ride_id, driver_id, rider_id, message=''):
+        new_entry = (request_id, ride_id, driver_id, rider_id, message)
+        self.c.execute("""
+                        INSERT INTO requests (request_id, ride_id, driver_id, rider_id, message)
+                        VALUES (?, ?, ?, ?, ?)
+                        """, new_entry)
         self.__commit()
     
-    def add_tag_to_ride(self, tag, ride):
-        new_tagged = (ride.ride_id, tag.tag_id)
-        c.execute("INSERT INTO ride_tags (ride, tag) VALUES (?, ?)", new_tagged)
-        self.__commit()
     
-    
+    ################################
     #### Get data from database ####
+    ################################
     
     
-    def get_users(self):
-        self.c.execute("SELECT user_id, login, password, name, gender, course FROM users")
-        query = self.c.fetchall()
-        return [User(*q) for q in query]
-    
-    def get_user(self, user):
-        self.c.execute("SELECT user_id, login, password, name, gender, course FROM users WHERE user_id=?", user.user_id)
-        query = self.c.fetchall()
+    def get_user(self, email):
+        self.c.execute("SELECT * FROM users WHERE user_id=?", email)
+        query = self.c.fetchone()
         return User(*query)
     
-    def get_companions(self, user):
-        self.c.execute("SELECT user_2 FROM companions WHERE user_1=?", user.user_id)
+    def get_companions_from_user(self, user):
+        self.c.execute("""
+                        SELECT name, gender, course, neighborhood, counter 
+                        FROM users
+                        LEFT JOIN companions ON email=user_1 
+                        WHERE user_2=?
+                        """, user.email)
         q1 = self.c.fetchall()
         l1 = [User(*q) for q in q1]
-        self.c.execute("SELECT user_1 FROM companions WHERE user_2=?", user.user_id)
+        self.c.execute("""
+                        SELECT name, gender, course, neighborhood, counter 
+                        FROM users
+                        LEFT JOIN companions ON email=user_2 
+                        WHERE user_1=?
+                        """, user.email)
         q2 = self.c.fetchall()
         l2 = [User(*q) for q in q2]
         return l1+l2
     
-    def get_rides(self, tags, ALL=True):
-        query = """
-            SELECT rides.ride_id, driver, schedule, anouncements, chat_channel, seats_offered, GROUP_CONCAT(tags.tag_id) AS tags
-            FROM rides
-            LEFT JOIN ride_tags ON rides.ride_id = ride_tags.ride
-            LEFT JOIN tags ON ride_tags.tag = tags.tag_id
-            WHERE tags.tag_id IN ({})
-            GROUP BY rides.ride_id
-            HAVING COUNT(*) >= {}
-            ORDER BY COUNT(*) DESC;
-        """.format(",".join(["?"]*len(tags)), len(tags) if ALL else 1)
-        self.c.execute(query, tags*2 if ALL else tags)
-        query = self.c.fetchall()
-        return [Ride(*q[:6], q[6].split(',')) for q in query]
+    def get_ride_tags(self, ride_id):
+        self.c.execute("""
+                        SELECT tag_id, description 
+                        FROM tags
+                        LEFT JOIN ride_tags ON tag_id 
+                        WHERE ride_id=?
+                        """, ride_id)
+        return [Tag(*q) for q in self.c.fechall()]
+        
+    def get_ride(self, ride_id):
+        self.c.execute("SELECT * FROM rides WHERE ride_id = ?", ride_id)
+        query = self.c.fetchone()
+        
+        driver_id = query[1]
+        orig = query[2]
+        dest = query[3]
+        time = query[4]
+        days = query[5:10]
+        seats_offered = query[10]
+        anouncements = query[11]
+        chat_channel = query[12]
+        tags = get_ride_tags(ride_id)
+        
+        return Ride(ride_id, driver_id, orig, dest, time, days, seats_offered, anouncements, chat_channel, tags)
     
-    def get_ride(self, ride):
-        self.c.execute("SELECT ride_id, driver, schedule, anouncements, chat_channel, seats_offered FROM rides WHERE ride_id = ?", ride.ride_id,)
+    def get_all_rides(self):
+        self.c.execute("SELECT ride_id FROM rides")
         query = self.c.fetchall()
-        return User(*query)
+        return [get_ride(q) for q in query]
     
     def get_rides_from_user(self, user):
-        query = """
-            SELECT rides.ride_id, driver, schedule, anouncements, chat_channel, seats_offered
-            FROM rides
-            LEFT JOIN user_rides ON rides.ride_id = user_rides.ride
-            WHERE user_rides.user=?
-        """
-        self.c.execute(query, user.user_id)
+        self.c.execute("SELECT ride_id FROM user_rides WHERE user_id=?", user.user_id)
         query = self.c.fetchall()
-        return [Ride(*q) for q in query]
+        return [get_ride(q) for q in query]
     
     
-    def get_users_in_ride(self, ride):
-        query = """
-            SELECT rides.ride_id, driver, schedule, anouncements, chat_channel, seats_offered, GROUP_CONCAT(tags.tag_id) AS tags
-            FROM users
-            LEFT JOIN user_rides ON user.user_id = user_rides.user            LEFT JOIN tags ON ride_tags.tag = tags.tag_id
-            WHERE user_rides.ride=?
-        """
-        self.c.execute(query, tags*2 if ALL else tags)
+    def get_user_in_ride(self, ride):
+        self.c.execute("SELECT user_id FROM user_rides WHERE ride_id=?", ride.ride_id)
         query = self.c.fetchall()
-        return [User(*q) for q in query]
+        return [get_user(q) for q in query]
     
     
     def get_tags(self):
-        self.c.execute("SELECT tag_id, description FROM tags")
+        self.c.execute("SELECT * FROM tags")
         query = self.c.fetchall()
-        return [User(*q) for q in query]
+        return [Tag(*q) for q in query]
+    
+    def get_user_requests(self, user):
+        self.c.execute("SELECT * FROM request WHERE driver_id=?", user.email)
+        query = self.c.fetchall()
+        return [Request(*q) for q in query]
         
-        
+    
+    ##################################
     #### Alter data from database ####
+    ##################################
     
     
     def update_user_data(self, user):
-        new_data = (user.login, user.password, user.name, user.gender, user.course, user.user_id)
-        self.c.execute("UPDATE companions SET login=?, password=?, name=?, gender=?, course=?  WHERE user_id=?", new_data)
-        self.__commit()
-    
-    def update_ride_data(self, ride):
-        new_data = (ride.driver, ride.schedule, ride.anouncements, ride.chat_channel, ride.seats_offered, ride.ride_id)
-        self.c.execute("UPDATE companions SET driver=?, schedule=?, anouncements=?, chat_channel=?, seats_offered=?  WHERE ride_id=?", new_data)
-        self.__commit()
-    
-    def update_tag_data(self, tag):
-        new_data = (tag.description, tag.tag_id)
-        self.c.execute("UPDATE companions SET description=?  WHERE tag_id=?", new_data)
+        new_data = (user.password, user.name, user.gender, user.course, user.neighborhood, user.email)
+        self.c.execute("UPDATE companions SET password=?, name=?, gender=?, course=?, neighborhood=?  WHERE email=?", new_data)
         self.__commit()
         
         
+    ###################################    
     #### Delete data from database ####
+    ###################################
+
     
-    
-    def __delete_from_companions(self, user_id):
-        self.c.execute("DELETE FROM companions WHERE user_1=?", (user_id,))
-        self.c.execute("DELETE FROM companions WHERE user_2=?", (user_id,))
-    
-    def delete_user(self, user_id):
-        self.c.execute("DELETE FROM users WHERE user_id=?", (user_id,))
+    def delete_user(self, email):
+        self.c.execute("DELETE FROM users WHERE email=?", email)
         self.__commit()
     
     def delete_ride(self, ride_id):
-        self.c.execute("DELETE FROM rides WHERE ride_id=?", (ride_id,))
+        self.c.execute("DELETE FROM rides WHERE ride_id=?", ride_id)
         self.__commit()
     
     def delete_tag(self, tag_id):
-        self.c.execute("DELETE FROM tags WHERE tag_id=?", (tag_id,))
+        self.c.execute("DELETE FROM tags WHERE tag_id=?", tag_id)
+        self.__commit()
+    
+    def remove_request(self, request_id):
+        self.c.execute("DELETE FROM requests WHERE request_id=?", request_id)
         self.__commit()
     
     def remove_user_from_ride(self, user_id, ride_id):
@@ -235,4 +291,5 @@ class DatabaseInterface:
     def __del__(self):
         # commit changes and close connection
         self.__commit()
+        self.c.close()
         self.conn.close()
