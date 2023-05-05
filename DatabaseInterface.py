@@ -41,7 +41,7 @@ class DatabaseInterface:
         # create rides table
         self.c.execute("""
                         CREATE TABLE IF NOT EXISTS rides
-                        (ride_id TEXT PRIMARY KEY,
+                        (ride_id INTEGER PRIMARY KEY,
                         driver_id TEXT,
                         orig TEXT,
                         dest TEXT,
@@ -53,17 +53,17 @@ class DatabaseInterface:
                         fri BIT,
                         seats_offered INTEGER,
                         anouncements TEXT,
-                        chat_channel TEXT),
-                        FOREIGN KEY (driver_id) REFERENCES users(email) ON DELETE CASCADE
+                        chat_channel TEXT,
+                        FOREIGN KEY (driver_id) REFERENCES users(email) ON DELETE CASCADE)
                         """)
 
         # create user_rides table
         self.c.execute("""
                         CREATE TABLE IF NOT EXISTS user_rides
                         (user_id TEXT,
-                        ride_id TEXT),
+                        ride_id TEXT,
                         FOREIGN KEY (user_id) REFERENCES users(email) ON DELETE CASCADE,
-                        FOREIGN KEY (ride_id) REFERENCES rides(ride_id) ON DELETE CASCADE
+                        FOREIGN KEY (ride_id) REFERENCES rides(ride_id) ON DELETE CASCADE)
                         """)
 
         # create tags table
@@ -77,22 +77,22 @@ class DatabaseInterface:
         self.c.execute("""
                         CREATE TABLE IF NOT EXISTS ride_tags
                         (ride_id TEXT,
-                        tag_id TEXT),
+                        tag_id TEXT,
                         FOREIGN KEY (ride_id) REFERENCES rides(ride_id) ON DELETE CASCADE,
-                        FOREIGN KEY (tag_id) REFERENCES tags(tag_id) ON DELETE CASCADE
+                        FOREIGN KEY (tag_id) REFERENCES tags(tag_id) ON DELETE CASCADE)
                         """)
         
         # creat requests table
         self.c.execute("""
                         CREATE TABLE IF NOT EXISTS requests
-                        (request_id INTEGER PRIMARY KEY
+                        (request_id INTEGER PRIMARY KEY,
                         ride_id TEXT,
                         driver_id TEXT,
                         rider_id TEXT,
-                        message TEXT),
+                        message TEXT,
                         FOREIGN KEY (ride_id) REFERENCES rides(ride_id) ON DELETE CASCADE,
                         FOREIGN KEY (driver_id) REFERENCES users(email) ON DELETE CASCADE,
-                        FOREIGN KEY (rider_id) REFERENCES users(email) ON DELETE CASCADE
+                        FOREIGN KEY (rider_id) REFERENCES users(email) ON DELETE CASCADE)
                         """)
         
         # set instance
@@ -114,24 +114,24 @@ class DatabaseInterface:
     def __count_new_companions(self, user_id, ride_id):
         
         # add each user already in ride to companions
-        c.execute("SELECT user_id FROM user_rides WHERE ride_id=?", (ride_id))
-        old_users_id = c.fetchall()
+        self.c.execute("SELECT user_id FROM user_rides WHERE ride_id=?", (ride_id,))
+        old_users_id = self.c.fetchall()
         for old_user in old_users_id:
             
             # check if entry exist
-            c.execute("SELECT * FROM companions WHERE (user_1=? AND user_2=?) OR (user_1=? AND user_2=?)", (user_id, old_user, old_user, user_id))
-            entry = c.fetchone()
+            self.c.execute("SELECT * FROM companions WHERE (user_1=? AND user_2=?) OR (user_1=? AND user_2=?)", (user_id, old_user[0], old_user[0], user_id))
+            entry = self.c.fetchone()
 
             # if entry do not exist, create one
             if entry is None:
-                self.c.execute("INSERT INTO companions (user_1, user_2, counter) VALUES (?, ?, ?)", (user_id, old_user, 1))
+                self.c.execute("INSERT INTO companions (user_1, user_2, counter) VALUES (?, ?, ?)", (user_id, old_user[0], 1))
             # if entry exist, add 1 to counter
             else:
                 self.c.execute("UPDATE companions SET counter = ? WHERE user_1=? AND user_2=?", (entry[2]+1, entry[0], entry[1]))
     
     def add_user_to_ride(self, user_id, ride_id):
         self.__count_new_companions(user_id, ride_id)
-        new_entry = (user.user_id, ride.ride_id)
+        new_entry = (user_id, ride_id)
         self.c.execute("INSERT INTO user_rides (user_id, ride_id) VALUES (?, ?)", new_entry)
         self.__commit()
      
@@ -140,7 +140,7 @@ class DatabaseInterface:
         self.c.execute("INSERT INTO tags (tag_id, description) VALUES (?, ?)", new_entry)
         self.__commit()
         
-    def add_tag_to_ride(ride_id, tag_id):
+    def add_tag_to_ride(self, ride_id, tag_id):
         new_entry = (ride_id, tag_id)
         self.c.execute("INSERT INTO ride_tags (ride_id, tag_id) VALUES (?, ?)", new_entry)
         self.__commit()
@@ -153,8 +153,8 @@ class DatabaseInterface:
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                         """, new_entry)
         for t in tags:
-            add_tag_to_ride(ride_id, t.tag_id)
-        add_user_to_ride(user_id, ride_id)
+            self.add_tag_to_ride(ride_id, t.tag_id)
+        self.add_user_to_ride(driver_id, ride_id)
         self.__commit()
         
     def add_request(self, request_id, ride_id, driver_id, rider_id, message=''):
@@ -172,9 +172,11 @@ class DatabaseInterface:
     
     
     def get_user(self, email):
-        self.c.execute("SELECT * FROM users WHERE user_id=?", email)
+        self.c.execute("SELECT * FROM users WHERE email=?", (email,))
         query = self.c.fetchone()
-        return User(*query)
+        if query:
+            return User(*query)
+        return None
     
     def get_companions_from_user(self, user):
         self.c.execute("""
@@ -182,7 +184,7 @@ class DatabaseInterface:
                         FROM users
                         LEFT JOIN companions ON email=user_1 
                         WHERE user_2=?
-                        """, user.email)
+                        """, (user.email,))
         q1 = self.c.fetchall()
         l1 = [User(*q) for q in q1]
         self.c.execute("""
@@ -190,51 +192,51 @@ class DatabaseInterface:
                         FROM users
                         LEFT JOIN companions ON email=user_2 
                         WHERE user_1=?
-                        """, user.email)
+                        """, (user.email,))
         q2 = self.c.fetchall()
-        l2 = [User(*q) for q in q2]
+        l2 = [Companion(*q) for q in q2]
         return l1+l2
     
     def get_ride_tags(self, ride_id):
         self.c.execute("""
-                        SELECT tag_id, description 
+                        SELECT tags.tag_id, description 
                         FROM tags
-                        LEFT JOIN ride_tags ON tag_id 
+                        LEFT JOIN ride_tags ON tags.tag_id=ride_tags.tag_id
                         WHERE ride_id=?
-                        """, ride_id)
-        return [Tag(*q) for q in self.c.fechall()]
+                        """, (ride_id,))
+        return [Tag(*q) for q in self.c.fetchall()]
         
     def get_ride(self, ride_id):
-        self.c.execute("SELECT * FROM rides WHERE ride_id = ?", ride_id)
+        self.c.execute("SELECT * FROM rides WHERE ride_id = ?", (ride_id,))
         query = self.c.fetchone()
-        
-        driver_id = query[1]
-        orig = query[2]
-        dest = query[3]
-        time = query[4]
-        days = query[5:10]
-        seats_offered = query[10]
-        anouncements = query[11]
-        chat_channel = query[12]
-        tags = get_ride_tags(ride_id)
-        
-        return Ride(ride_id, driver_id, orig, dest, time, days, seats_offered, anouncements, chat_channel, tags)
+        if query:
+            driver_id = query[1]
+            orig = query[2]
+            dest = query[3]
+            time = query[4]
+            days = query[5:10]
+            seats_offered = query[10]
+            anouncements = query[11]
+            chat_channel = query[12]
+            tags = self.get_ride_tags(ride_id)
+            return Ride(ride_id, driver_id, orig, dest, time, days, seats_offered, anouncements, chat_channel, tags)
+        return None
     
     def get_all_rides(self):
         self.c.execute("SELECT ride_id FROM rides")
         query = self.c.fetchall()
-        return [get_ride(q) for q in query]
+        return [self.get_ride(q[0]) for q in query]
     
     def get_rides_from_user(self, user):
-        self.c.execute("SELECT ride_id FROM user_rides WHERE user_id=?", user.user_id)
+        self.c.execute("SELECT ride_id FROM user_rides WHERE user_id=?", (user.email,))
         query = self.c.fetchall()
-        return [get_ride(q) for q in query]
+        return [self.get_ride(q[0]) for q in query]
     
     
     def get_user_in_ride(self, ride):
-        self.c.execute("SELECT user_id FROM user_rides WHERE ride_id=?", ride.ride_id)
+        self.c.execute("SELECT user_id FROM user_rides WHERE ride_id=?", (ride.ride_id,))
         query = self.c.fetchall()
-        return [get_user(q) for q in query]
+        return [self.get_user(q[0]) for q in query]
     
     
     def get_tags(self):
@@ -243,7 +245,7 @@ class DatabaseInterface:
         return [Tag(*q) for q in query]
     
     def get_user_requests(self, user):
-        self.c.execute("SELECT * FROM request WHERE driver_id=?", user.email)
+        self.c.execute("SELECT * FROM request WHERE driver_id=?", (user.email,))
         query = self.c.fetchall()
         return [Request(*q) for q in query]
         
@@ -265,19 +267,19 @@ class DatabaseInterface:
 
     
     def delete_user(self, email):
-        self.c.execute("DELETE FROM users WHERE email=?", email)
+        self.c.execute("DELETE FROM users WHERE email=?", (email,))
         self.__commit()
     
     def delete_ride(self, ride_id):
-        self.c.execute("DELETE FROM rides WHERE ride_id=?", ride_id)
+        self.c.execute("DELETE FROM rides WHERE ride_id=?", (ride_id,))
         self.__commit()
     
     def delete_tag(self, tag_id):
-        self.c.execute("DELETE FROM tags WHERE tag_id=?", tag_id)
+        self.c.execute("DELETE FROM tags WHERE tag_id=?", (tag_id,))
         self.__commit()
     
     def remove_request(self, request_id):
-        self.c.execute("DELETE FROM requests WHERE request_id=?", request_id)
+        self.c.execute("DELETE FROM requests WHERE request_id=?", (request_id,))
         self.__commit()
     
     def remove_user_from_ride(self, user_id, ride_id):
