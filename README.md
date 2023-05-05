@@ -7,7 +7,7 @@ Feito utilizando React, Python e MySql.
 - Guilherme Soeiro de Carvalho Caporali
 - Vitor Fitzherbert Souza
 - Luiz Paulo Santos Ribeiro
-- Matheus
+- Matheus Athan
 
 # Backlog do Produto
 
