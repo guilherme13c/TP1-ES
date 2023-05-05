@@ -178,13 +178,13 @@ class DatabaseInterface:
             return User(*query)
         return None
     
-    def get_companions_from_user(self, user):
+    def get_companions_from_user(self, email):
         self.c.execute("""
                         SELECT name, gender, course, neighborhood, counter 
                         FROM users
                         LEFT JOIN companions ON email=user_1 
                         WHERE user_2=?
-                        """, (user.email,))
+                        """, (email,))
         q1 = self.c.fetchall()
         l1 = [User(*q) for q in q1]
         self.c.execute("""
@@ -227,14 +227,14 @@ class DatabaseInterface:
         query = self.c.fetchall()
         return [self.get_ride(q[0]) for q in query]
     
-    def get_rides_from_user(self, user):
-        self.c.execute("SELECT ride_id FROM user_rides WHERE user_id=?", (user.email,))
+    def get_rides_from_user(self, email):
+        self.c.execute("SELECT ride_id FROM user_rides WHERE user_id=?", (email,))
         query = self.c.fetchall()
         return [self.get_ride(q[0]) for q in query]
     
     
-    def get_user_in_ride(self, ride):
-        self.c.execute("SELECT user_id FROM user_rides WHERE ride_id=?", (ride.ride_id,))
+    def get_user_in_ride(self, ride_id):
+        self.c.execute("SELECT user_id FROM user_rides WHERE ride_id=?", (ride_id,))
         query = self.c.fetchall()
         return [self.get_user(q[0]) for q in query]
     
@@ -244,8 +244,8 @@ class DatabaseInterface:
         query = self.c.fetchall()
         return [Tag(*q) for q in query]
     
-    def get_user_requests(self, user):
-        self.c.execute("SELECT * FROM request WHERE driver_id=?", (user.email,))
+    def get_user_requests(self, email):
+        self.c.execute("SELECT * FROM requests WHERE driver_id=?", (email,))
         query = self.c.fetchall()
         return [Request(*q) for q in query]
         
