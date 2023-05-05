@@ -7,7 +7,7 @@ class User:
         self.course = course
         self.neighborhood = neighborhood
 
-class Companions:
+class Companion:
     def __init__(self, name, gender, course, neighborhood, counter):
         self.name = name
         self.gender = gender
@@ -37,6 +37,6 @@ class Request:
     def __init__(self, request_id, ride_id, driver_id, rider_id, message=''):
         self. request_id = request_id
         self.ride_id = ride_id
-        self.driver_id = ride_id
+        self.driver_id = driver_id
         self.rider_id = rider_id
         self.message = message
