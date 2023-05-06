@@ -7,7 +7,6 @@ Feito utilizando React, Python (fastAPI) e MySql.
 - Guilherme Soeiro de Carvalho Caporali [fullstack]
 - Vitor Fitzherbert Souza [fullstack]
 - Luiz Paulo Santos Ribeiro [backend]
-- Matheus Athan [frontend]
 
 # Backlog do Produto
 
@@ -29,25 +28,25 @@ Feito utilizando React, Python (fastAPI) e MySql.
 - ver no mapa por onde passam as caronas próximas a ele
 
 # Backlog do Sprint
-### Implementar interface com banco de dados [Luiz Paulo]
+### Implementar interface com banco de dados
 - criar bancos de dados [2]
 - criar tabelas [1]
 - criar uma api para registro no banco de dados [2]
 - criar uma api para alteração no banco de dados [2]
 - criar uma api para remoção do banco de dados [3]
 - criar uma api para consulta do banco de dados [2]
-### Implementar classe User e métodos associados [Guilherme]
+### Implementar classe User e métodos associados
 - editar informações pessoais [2]
 - cadastrar user [2]
 - excluir user [2]
 - enviar pedidos de carona [5]
 - buscar carona [2]
-### Implementar classe Ride [Vitor]
+### Implementar classe Ride
 - criar carona [2]
 - excluir carona [3]
 - editar carona [3]
 - aceitar/rejeitar pedidos de users [5]
-### Implementar interface gráfica	[Matheus]
+### Implementar interface gráfica
 - Cadastro e Login de usuário [3]
 -	Mostrar informações do usuário [3]
 -	Mostrar caronas do usuário [2]
