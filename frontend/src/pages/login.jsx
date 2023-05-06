@@ -8,10 +8,28 @@ function Login() {
         setFormData((prevFormData) => ({...prevFormData, [name]: value}));
     }
 
-    function handleSubmit(event) {
+    const handleSubmit = async(event) => {
         event.preventDefault();
 
-        // TODO: Consume login API
+        try {
+            const response = await fetch("http://127.0.0.1:8000/login", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+
+                console.log(data);
+            } else {
+                throw new Error("login API request failed.")
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     // TODO: style page
