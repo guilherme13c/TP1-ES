@@ -4,10 +4,10 @@ Um sistema para unir universitários que oferecem e que buscam caronas!
 Feito utilizando React, Python e MySql.
 
 # Integrantes
-- Guilherme Soeiro de Carvalho Caporali
-- Vitor Fitzherbert Souza
-- Luiz Paulo Santos Ribeiro
-- Matheus Athan
+- Guilherme Soeiro de Carvalho Caporali [fullstack]
+- Vitor Fitzherbert Souza [fullstack]
+- Luiz Paulo Santos Ribeiro [backend]
+- Matheus Athan [frontend]
 
 # Backlog do Produto
 
