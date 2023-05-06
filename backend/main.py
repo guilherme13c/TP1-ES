@@ -1,5 +1,6 @@
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
+import uvicorn
 
 app = FastAPI()
 
@@ -27,3 +28,6 @@ async def login():
     return {
         "valid": True, 
         }
+    
+if __name__ == "__main__":
+    uvicorn.run("main:app", port=8080, log_level='info')
