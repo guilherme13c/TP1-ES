@@ -4,10 +4,10 @@ Um sistema para unir universitários que oferecem e que buscam caronas!
 Feito utilizando React, Python e MySql.
 
 # Integrantes
-- Guilherme Soeiro de Carvalho Caporali [FullStack]
-- Vitor Fitzherbert Souza [FullStack]
-- Luiz Paulo Santos Ribeiro [Backend]
-- Matheus Athan [Frontend]
+- Guilherme Soeiro de Carvalho Caporali
+- Vitor Fitzherbert Souza
+- Luiz Paulo Santos Ribeiro
+- Matheus Athan
 
 # Backlog do Produto
 
@@ -47,7 +47,7 @@ Feito utilizando React, Python e MySql.
 - excluir carona [3]
 - editar carona [3]
 - aceitar/rejeitar pedidos de users [5]
-### Implementar interface gráfica [Matheus]
+### Implementar interface gráfica	[Matheus]
 - Cadastro e Login de usuário [3]
 -	Mostrar informações do usuário [3]
 -	Mostrar caronas do usuário [2]
