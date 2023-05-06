@@ -1,5 +1,9 @@
 settings.json
+
+# backend
 *.pyc
+/backend/__pycache__
+
 
 # frontend
 /frontend/node_modules
