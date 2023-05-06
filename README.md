@@ -1,7 +1,7 @@
 # FaculRide
 
 Um sistema para unir universitários que oferecem e que buscam caronas!
-Feito utilizando React, Python e MySql.
+Feito utilizando React, Python (fastAPI) e MySql.
 
 # Integrantes
 - Guilherme Soeiro de Carvalho Caporali [fullstack]
