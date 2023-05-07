@@ -1,9 +1,22 @@
 from passlib.context import CryptContext
+import DatabaseInterface
+from DataStructures import User
 
-def verifyUser(username: str, password: str):
-    # TODO: verify user in the DB
-    pass
+db = DatabaseInterface()
 
-def registerUser():
-    # TODO: create new user in the BD
-    pass
+def verifyUser(email: str, password: str):
+
+    user = db.get_user(email)    
+    if user:
+        if user.password == password:
+            return user
+        return False
+    else:
+        return None
+
+def registerUser(email: str, password: str, name: str, gender: str, course: str, neighborhood: str):
+    if db.get_user(email):
+        # email already registered
+        return
+    db.add_user(email, password, name, gender, course, neighborhood)
+    
