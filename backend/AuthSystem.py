@@ -19,5 +19,5 @@ def verifyUser(email: str, password: str):
 def registerUser(email: str, password: str, name: str, gender: str, course: str, neighborhood: str):
     if db.get_user(email):
         # email already registered
-        return
+        return None
     db.add_user(email, password, name, gender, course, neighborhood)

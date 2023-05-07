@@ -3,6 +3,7 @@ from fastapi import FastAPI, Depends, status, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from AuthSystem import *
+from typing import Union
 
 app = FastAPI()
 
@@ -29,7 +30,16 @@ class LoginFormData(BaseModel):
     password: str
 
 
-@app.post('/token')
+class RegisterFormData(BaseModel):
+    email: str
+    password: str
+    name: str
+    gender: str
+    course: str
+    neighbourhood: str
+
+
+@app.post('/login')
 async def login(login_form_data: LoginFormData):
 
     verification = verifyUser(login_form_data.email, login_form_data.password)
@@ -38,7 +48,19 @@ async def login(login_form_data: LoginFormData):
 
     return {
         "access_token": login_form_data.username,
-        "token_type": "bearer"
+    }
+
+
+@app.post('/register')
+async def login(register_form_data: RegisterFormData):
+
+    register = registerUser(register_form_data.email, register_form_data.password, register_form_data.name,
+                            register_form_data.gender, register_form_data.course, register_form_data.neighbourhood)
+    if not register:
+        raise HTTPException(400, "Register failed. Email already in use")
+
+    return {
+        "access_token": register_form_data.username,
     }
 
 if __name__ == "__main__":
