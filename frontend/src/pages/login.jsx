@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import FormWrapper from '../components/FormWrapper';
 
 function Login() {
     const [formData, setFormData] = useState({username: "", password: ""});
@@ -34,15 +35,18 @@ function Login() {
 
     // TODO: style page
     return (
-        <form onSubmit={handleSubmit}>
-            <label>Usuário
-                <input type='text' name='username' value={formData.username} onChange={handleChange}/>
-            </label>
-            <label>Senha
-                <input type='password' name='password' value={formData.password} onChange={handleChange}/>
-            </label>
-            <button type='submit'>Login</button>
-        </form>
+        <FormWrapper>
+            <form onSubmit={handleSubmit}>
+                <label><span>Usuário</span>
+                    <input type='text' name='username' value={formData.username} onChange={handleChange}/>
+                </label>
+                <label><span>Senha</span>
+                    <input type='password' name='password' value={formData.password} onChange={handleChange}/>
+                </label>
+                <button type='submit'>Login</button>
+            </form>
+            <p className="small">Ainda não possui conta? <a href="/register">Cadastre-se</a></p>
+        </FormWrapper>
     );
 }
 
