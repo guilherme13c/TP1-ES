@@ -3,7 +3,7 @@ settings.json
 # backend
 *.pyc
 /backend/__pycache__
-
+*.db
 
 # frontend
 /frontend/node_modules
