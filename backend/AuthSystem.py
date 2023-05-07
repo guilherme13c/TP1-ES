@@ -19,4 +19,3 @@ def registerUser(email: str, password: str, name: str, gender: str, course: str,
         # email already registered
         return
     db.add_user(email, password, name, gender, course, neighborhood)
-    

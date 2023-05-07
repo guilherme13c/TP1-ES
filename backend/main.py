@@ -1,8 +1,10 @@
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi import FastAPI
 import uvicorn
+from fastapi import FastAPI, Depends, status, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from AuthSystem import *
 
-app = FastAPI()
+app = FastAPI()    
 
 origins = [
     "http://localhost:3000",
@@ -20,13 +22,20 @@ app.add_middleware(
 async def root():
     return {"message": "Hello, World!"}
 
-@app.post('/login')
-async def login():
+class LoginFormData(BaseModel):
+    email: str
+    password: str
+
+@app.post('/token')
+async def login(login_form_data: LoginFormData):
     
-    # TODO: implement logic to verify if user exists
-    
+    verification = verifyUser(login_form_data.email, login_form_data.password)
+    if not verification:
+        raise HTTPException(400, "Incorrect credentials")
+        
     return {
-        "valid": True, 
+        "access_token": login_form_data.username,
+        "token_type": "bearer"
         }
     
 if __name__ == "__main__":
