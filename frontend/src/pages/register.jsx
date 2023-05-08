@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import FormWrapper from '../components/FormWrapper';
-import { Navigate } from 'react-router-dom';
 
 function Register() {
     const [formData, setFormData] = useState({email: "", person_name: "", gender: "", course: "", neighbourhood: "", password: "", passwordConfirm: ""});
@@ -36,7 +35,8 @@ function Register() {
                 const data = await response.json();
 
                 console.log(data);
-                window.location.href = '/'
+                localStorage.setItem('access_token', data.access_token)
+                window.location.href = '/add_ride'
             } else {
                 throw new Error("register API request failed.")
             }

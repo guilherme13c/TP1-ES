@@ -50,7 +50,7 @@ class RideFormData(BaseModel):
 
 
 @app.post('/login')
-async def login(login_form_data: LoginFormData):
+async def login_api(login_form_data: LoginFormData):
     user = authenticateUser(
         login_form_data.email, login_form_data.password)
     if not user:
@@ -66,26 +66,45 @@ async def login(login_form_data: LoginFormData):
 
 
 @app.post('/register')
-async def login(register_form_data: RegisterFormData):
+async def register_api(register_form_data: RegisterFormData):
 
     register = registerUser(register_form_data.email, register_form_data.password, register_form_data.name,
                             register_form_data.gender, register_form_data.course, register_form_data.neighbourhood)
     if register == None:
-        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Register failed. Email already in use")
+        raise HTTPException(status.HTTP_400_BAD_REQUEST,
+                            "Register failed. Email already in use")
     else:
+        access_token = create_access_token(
+        data={"sub": user.email}, expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
         return {
-            "email": register_form_data.email,
+            "access_token": access_token,
+            "token_type": "bearer"
         }
-    
+
+
 @app.get('/get_rides')
-async def login():
-    rides=db.get_all_rides()
-    return rides
+async def get_rides_api(credentials: HTTPAuthorizationCredentials = Depends(oauth2_scheme)):
+    try:
+        payload = verify_jwt(credentials)
+        rides = db.get_all_rides()
+        return {
+            "rides": rides
+        }
+    except HTTPException as e:
+        raise e
+
 
 @app.post('/add_ride')
-async def login(rfd: RideFormData):
-    rides=db.add_ride(0,rfd.orig,rfd.dest,rfd.time,rfd.days,rfd.seats_offered);
-    return rides
+async def add_ride_api(ride_form_data: RideFormData, credentials: HTTPAuthorizationCredentials = Depends(oauth2_scheme)):
+    try:
+        payload = verify_jwt(credentials)
+        rides = db.add_ride(0, ride_form_data.orig, ride_form_data.dest,
+                            ride_form_data.time, ride_form_data.days, ride_form_data.seats_offered)
+        return {
+            "rides": rides
+        }
+    except HTTPException as e:
+        raise e
 
 if __name__ == "__main__":
     uvicorn.run("main:app", port=8080, log_level='info')

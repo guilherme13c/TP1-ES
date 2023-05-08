@@ -26,17 +26,23 @@ function OfferRide() {
             delete fd2.wed;
             delete fd2.thu;
             delete fd2.fri;
-            fd2.seats_offered=+fd2.seats_offered;
+            fd2.seats_offered = +fd2.seats_offered;
+            
+            const token = localStorage.getItem('access_token');
+
             const response = await fetch("http://127.0.0.1:8080/add_ride", {
                 method: "POST",
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify(fd2)
             });
 
             if (response.ok) {
                 const data = await response.json();
+
+                console.log(data)
             } else {
                 throw new Error("login API request failed.")
             }
