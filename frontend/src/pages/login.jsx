@@ -13,6 +13,7 @@ function Login() {
         event.preventDefault();
 
         try {
+            console.log(JSON.stringify(formData))
             const response = await fetch("http://127.0.0.1:8080/login", {
                 method: "POST",
                 headers: {
@@ -33,7 +34,6 @@ function Login() {
         }
     }
 
-    // TODO: style page
     return (
         <FormWrapper>
             <form onSubmit={handleSubmit}>
@@ -43,7 +43,7 @@ function Login() {
                 <label><span>Senha</span>
                     <input type='password' name='password' value={formData.password} onChange={handleChange}/>
                 </label>
-                <button type='submit'>Login</button>
+                <button type='submit'>Entrar</button>
             </form>
             <p className="small">Ainda não possui conta? <a href="/register">Cadastre-se</a></p>
         </FormWrapper>

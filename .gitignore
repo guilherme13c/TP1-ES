@@ -3,6 +3,7 @@ settings.json
 # backend
 *.pyc
 /backend/__pycache__
+/backend/.vscode
 *.db
 
 # frontend
