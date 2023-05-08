@@ -1,5 +1,5 @@
 import uvicorn
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from AuthSystem import *
@@ -40,12 +40,17 @@ class RegisterFormData(BaseModel):
 
 @app.post('/login')
 async def login(login_form_data: LoginFormData):
-    verification = verifyUser(login_form_data.email, login_form_data.password)
-    if not verification:
-        raise HTTPException(400, "Incorrect credentials")
+    user = authenticateUser(
+        login_form_data.email, login_form_data.password)
+    if not user:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                            detail="Invalid username or password")
 
+    access_token = create_access_token(
+        data={"sub": user.email}, expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
     return {
-        "access_token": login_form_data.email,
+        "access_token": access_token,
+        "token_type": "bearer"
     }
 
 
@@ -55,10 +60,10 @@ async def login(register_form_data: RegisterFormData):
     register = registerUser(register_form_data.email, register_form_data.password, register_form_data.name,
                             register_form_data.gender, register_form_data.course, register_form_data.neighbourhood)
     if register == None:
-        raise HTTPException(400, "Register failed. Email already in use")
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Register failed. Email already in use")
     else:
         return {
-            "access_token": register_form_data.email,
+            "email": register_form_data.email,
         }
 
 if __name__ == "__main__":

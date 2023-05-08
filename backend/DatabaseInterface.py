@@ -311,6 +311,7 @@ class DatabaseInterface:
 
 if __name__ == "__main__":
     db = DatabaseInterface()
+    # db.c.execute("DELETE FROM users")
     users = db.get_all_users()
     for user in users:
         print(user)

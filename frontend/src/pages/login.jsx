@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import FormWrapper from '../components/FormWrapper';
+import { Redirect } from 'react-router-dom';
 
 function Login() {
-    const [formData, setFormData] = useState({username: "", password: ""});
+    const [formData, setFormData] = useState({ email: "", password: "" });
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     function handleChange(event) {
         const { name, value } = event.target;
@@ -26,6 +28,7 @@ function Login() {
                 const data = await response.json();
 
                 console.log(data);
+                return <Redirect to='/home'/>
             } else {
                 throw new Error("login API request failed.")
             }
@@ -38,7 +41,7 @@ function Login() {
         <FormWrapper>
             <form onSubmit={handleSubmit}>
                 <label><span>Usuário</span>
-                    <input type='text' name='username' value={formData.username} onChange={handleChange}/>
+                    <input type='text' name='email' value={formData.email} onChange={handleChange}/>
                 </label>
                 <label><span>Senha</span>
                     <input type='password' name='password' value={formData.password} onChange={handleChange}/>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import FormWrapper from '../components/FormWrapper';
+import { Redirect } from 'react-router-dom';
 
 function Register() {
     const [formData, setFormData] = useState({email: "", person_name: "", gender: "", course: "", neighbourhood: "", password: "", passwordConfirm: ""});
@@ -35,6 +36,7 @@ function Register() {
                 const data = await response.json();
 
                 console.log(data);
+                return <Redirect to='/home'/>
             } else {
                 throw new Error("register API request failed.")
             }
