@@ -1,9 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const navigate = useNavigate();
 
 function RideTableRow(ride) {
+    const navigate = useNavigate();
+    
     const navigateToRide = () => navigate(`/ride/${ride.ride_id}`);
 
     return (
