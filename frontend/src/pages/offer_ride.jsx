@@ -19,17 +19,17 @@ function OfferRide() {
 
         try {
             let fd2={...formData};
-            console.log(fd2);
             fd2.days=[formData.mon,formData.tue,formData.wed,formData.thu,formData.fri];
             delete fd2.mon;
             delete fd2.tue;
             delete fd2.wed;
             delete fd2.thu;
             delete fd2.fri;
-            fd2.seats_offered = +fd2.seats_offered;
             
             const token = localStorage.getItem('access_token');
 
+            fd2.seats_offered=+fd2.seats_offered;
+            fd2.driver_id=0;
             const response = await fetch("http://127.0.0.1:8080/add_ride", {
                 method: "POST",
                 headers: {

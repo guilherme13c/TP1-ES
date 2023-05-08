@@ -45,8 +45,9 @@ class RideFormData(BaseModel):
     orig: str
     dest: str
     time: str
-    days: List[int]
+    days: List[bool]
     seats_offered: int
+    driver_id: int
 
 
 @app.post('/login')
