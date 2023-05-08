@@ -27,7 +27,7 @@ function Login() {
 
                 console.log(JSON.stringify(data));
                 localStorage.setItem('access_token', data.access_token)
-                window.location.href = '/add_ride'
+                window.location.href = '/offer_ride'
             } else {
                 throw new Error("login API request failed.")
             }

@@ -40,7 +40,7 @@ function Register() {
 
                 console.log(data);
                 localStorage.setItem('access_token', data.access_token)
-                window.location.href = '/add_ride'
+                window.location.href = '/offer_ride'
             } else {
                 throw new Error("register API request failed.")
             }
