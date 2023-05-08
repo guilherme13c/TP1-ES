@@ -29,7 +29,7 @@ function OfferRide() {
             const token = localStorage.getItem('access_token');
 
             fd2.seats_offered=+fd2.seats_offered;
-            fd2.driver_id=0;
+            fd2.driver_id=localStorage.getItem('email');
             const response = await fetch("http://127.0.0.1:8080/add_ride", {
                 method: "POST",
                 headers: {
@@ -40,8 +40,8 @@ function OfferRide() {
             });
 
             if (response.ok) {
+                alert("Carona oferecida! Acompanhe-a na sua página de perfil.");
                 const data = await response.json();
-
                 console.log(data)
             } else {
                 throw new Error("login API request failed.")
