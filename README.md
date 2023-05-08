@@ -28,7 +28,7 @@ Feito utilizando React, Python (fastAPI) e MySql.
 - ver no mapa por onde passam as caronas próximas a ele
 
 # Backlog do Sprint
-### Implementar interface com banco de dados
+### Tarefas técnicas
 - criar bancos de dados [2]
 - criar tabelas [1]
 - criar uma api para registro no banco de dados [2]
@@ -36,17 +36,17 @@ Feito utilizando React, Python (fastAPI) e MySql.
 - criar uma api para remoção do banco de dados [3]
 - criar uma api para consulta do banco de dados [2]
 ### Implementar classe User e métodos associados
-- editar informações pessoais [2]
-- cadastrar user [2]
-- excluir user [2]
-- enviar pedidos de carona [5]
-- buscar carona [2]
+- como usuário, gostaria de poder editar minhas informações pessoais [2]
+- como usuário, gostaria de poder cadastrar minha conta [2]
+- como usuário, gostaria de poder excluir minha conta [2]
+- como usuário, gostaria de poder enviar pedidos para participar de caronas [5]
+- como usuário, gostaria de poder buscar uma carona [2]
 ### Implementar classe Ride
-- criar carona [2]
-- excluir carona [3]
-- editar carona [3]
-- aceitar/rejeitar pedidos de users [5]
-### Implementar interface gráfica
+- como usuário, gostaria de poder criar uma nova carona [2]
+- como responável por uma carona, gostaria de poder excluí-la [3]
+- como responável por uma carona, gostaria de editá-la [3]
+- como responável por uma carona, gostaria de aceitar/rejeitar pedidos de users para participarem dela [5]
+### Implementar interface gráfica (como usuário, gostaria de poder usar a aplicação por meio de uma interface gráfica simples)
 - Cadastro e Login de usuário [3]
 -	Mostrar informações do usuário [3]
 -	Mostrar caronas do usuário [2]
