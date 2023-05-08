@@ -45,8 +45,9 @@ class RideFormData(BaseModel):
     orig: str
     dest: str
     time: str
-    days: List[int]
+    days: List[bool]
     seats_offered: int
+    driver_id: int
 
 
 @app.post('/login')
@@ -67,7 +68,6 @@ async def login(login_form_data: LoginFormData):
 
 @app.post('/register')
 async def login(register_form_data: RegisterFormData):
-
     register = registerUser(register_form_data.email, register_form_data.password, register_form_data.name,
                             register_form_data.gender, register_form_data.course, register_form_data.neighbourhood)
     if register == None:
@@ -84,7 +84,7 @@ async def login():
 
 @app.post('/add_ride')
 async def login(rfd: RideFormData):
-    rides=db.add_ride(0,rfd.orig,rfd.dest,rfd.time,rfd.days,rfd.seats_offered);
+    rides=db.add_ride(0,rfd.driver_id,rfd.orig,rfd.dest,rfd.time,rfd.days,rfd.seats_offered);
     return rides
 
 if __name__ == "__main__":

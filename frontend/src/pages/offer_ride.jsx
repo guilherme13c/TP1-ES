@@ -19,7 +19,6 @@ function OfferRide() {
 
         try {
             let fd2={...formData};
-            console.log(fd2);
             fd2.days=[formData.mon,formData.tue,formData.wed,formData.thu,formData.fri];
             delete fd2.mon;
             delete fd2.tue;
@@ -27,6 +26,7 @@ function OfferRide() {
             delete fd2.thu;
             delete fd2.fri;
             fd2.seats_offered=+fd2.seats_offered;
+            fd2.driver_id=0;
             const response = await fetch("http://127.0.0.1:8080/add_ride", {
                 method: "POST",
                 headers: {

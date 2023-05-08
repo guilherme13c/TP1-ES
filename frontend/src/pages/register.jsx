@@ -22,6 +22,10 @@ function Register() {
         }
 
         event.preventDefault();
+        let fd2={...formData};
+        delete fd2.passwordConfirm;
+        fd2.name=formData.person_name;
+        delete fd2.person_name;
 
         try {
             const response = await fetch("http://127.0.0.1:8080/register", {
@@ -29,7 +33,7 @@ function Register() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(fd2)
             });
 
             if (response.ok) {
