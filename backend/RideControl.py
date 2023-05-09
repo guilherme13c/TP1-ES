@@ -4,8 +4,7 @@ from DataStructures import *
 db = DatabaseInterface()
 
 def add_ride(driver: User, orig: str, dest: str, time: str, days=[0,0,0,0,0], seats_offered=0, anouncements='', chat_channel='', tags=[]):
-    r_id = len(db.get_all_rides()) + 1
-    db.add_ride(r_id, driver.email, orig, dest, time, days, seats_offered, anouncements, chat_channel, tags)
+    db.add_ride(driver.email, orig, dest, time, days, seats_offered, anouncements, chat_channel, tags)
 
 def get_all_rides():
     return db.get_all_rides()
