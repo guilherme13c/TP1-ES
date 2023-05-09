@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import RideTable from "../components/RideTable";
+import Navbar from "../components/NavBar";
 
 function Rides() {
     const [rides, setRides] = useState([]);
@@ -27,6 +28,7 @@ function Rides() {
 
     return (
         <div className="rides-page">
+            <Navbar/>
             {RideTable(rides)}
             <hr />
             <button onClick={() => {window.location.href="/offer_ride"}} className="create-ride">Criar uma nova carona</button>
