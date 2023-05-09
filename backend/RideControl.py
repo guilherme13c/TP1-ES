@@ -1,4 +1,4 @@
-import DatabaseInterface
+from DatabaseInterface import *
 from DataStructures import *
 from typing import List
 

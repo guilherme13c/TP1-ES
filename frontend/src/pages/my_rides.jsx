@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import RideTable from "../components/RideTable";
 import Navbar from "../components/NavBar";
 
+// TODO: Fix, not working
 function MyRides() {
     const [myRides, setMyRides] = useState([]);
 
@@ -11,19 +12,20 @@ function MyRides() {
             const userEmail = localStorage.getItem('email');
 
             const response = await fetch("http://127.0.0.1:8080/get_my_rides", {
-                method: "GET",
+                method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
-                }
+                },
+                body: JSON.stringify({email: userEmail})
             });
 
             const json = await response.json();
-            console.log(json["myRides"]);
+            console.log(JSON.stringify(json));
             setMyRides(json['myRides'])
         }
         fetchMyRides()
-        console.log("myRides: ", myRides)
+        console.log("myRides: ", myRides);
     }, []);
 
     return (
@@ -36,3 +38,5 @@ function MyRides() {
         </div>
     );
 }
+
+export default MyRides;

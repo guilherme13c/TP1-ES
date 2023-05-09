@@ -1,19 +1,19 @@
 class User:
-    def __init__(self, email, password, name, gender, course, neighborhood):
+    def __init__(self, email, password, name, gender, course, neighbourhood):
         self.email = email  # email
         self.password = password
         self.name = name
         self.gender = gender
         self.course = course
-        self.neighborhood = neighborhood
+        self.neighbourhood = neighbourhood
 
 
 class Companion:
-    def __init__(self, name, gender, course, neighborhood, counter):
+    def __init__(self, name, gender, course, neighbourhood, counter):
         self.name = name
         self.gender = gender
         self.course = course
-        self.neighborhood = neighborhood
+        self.neighbourhood = neighbourhood
         self.counter = counter
 
 

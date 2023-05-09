@@ -19,8 +19,7 @@ function Profile() {
 
         if (response.ok) {
             const data = await response.json();
-            console.log(data);
-            delete data.password;
+            console.log("1:\t",JSON.stringify(data));
             data.neighbourhood=data.neighborhood;
             delete data.neighborhood;
             setFormData(data);
@@ -28,7 +27,7 @@ function Profile() {
             throw new Error("register API request failed.")
         }
     }
-    if(formData.email==null) getUser();
+    if(formData.email==="") getUser();
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -51,7 +50,8 @@ function Profile() {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log(data);
+                console.log(JSON.stringify(data));
+                alert("Informações atualizadas.")
             } else {
                 throw new Error("register API request failed.")
             }
