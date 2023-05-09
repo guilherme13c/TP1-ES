@@ -67,7 +67,7 @@ function Profile() {
             <div className='left'>
                 <h2>Seu perfil</h2>
                 <img src={require("../default.jpg")} className='profile_pic' />
-                <button onClick={function(){navigate("/home");}} className="button">Gerenciar caronas</button>
+                <button onClick={function(){navigate("/");}} className="button">Gerenciar caronas</button>
                 <button onClick={function(){navigate("/offer_ride");}} className="button">Oferecer carona</button>
             </div>
             <div className='form'>
