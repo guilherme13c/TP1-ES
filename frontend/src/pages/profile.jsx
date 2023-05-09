@@ -78,11 +78,11 @@ function Profile() {
                 <label><span>Sexo</span>
                     <div onChange={handleChange}>
                         <label className="check">
-                            <input name='gender' type='radio' value='M' id='Male'/>
+                            <input name='gender' type='radio' value='M' id='Male' checked={formData.gender=='M'}/>
                             <span>Masculino</span>
                         </label>
                         <label className="check">
-                            <input name='gender' type='radio' value='F' id='Female'/>
+                            <input name='gender' type='radio' value='F' id='Female' checked={formData.gender=='F'}/>
                             <span>Feminino</span>
                         </label>
                     </div>
