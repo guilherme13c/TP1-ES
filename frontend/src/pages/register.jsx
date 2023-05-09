@@ -10,7 +10,6 @@ function Register() {
     }
 
     const handleSubmit = async (event) => {
-        console.log(JSON.stringify(formData))
         if (formData.password !== formData.passwordConfirm) {
             alert("A senha difere da confirmação!")
             return

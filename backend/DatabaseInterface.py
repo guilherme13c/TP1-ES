@@ -152,24 +152,25 @@ class DatabaseInterface:
             "INSERT INTO ride_tags (ride_id, tag_id) VALUES (?, ?)", new_entry)
         self.__commit()
 
-    def add_ride(self, ride_id, driver_id, orig, dest, time, days, seats_offered, anouncements='', chat_channel='', tags=[]):
-        new_entry = (ride_id, driver_id, orig, dest, time,
+    def add_ride(self, driver_id, orig, dest, time, days, seats_offered, anouncements='', chat_channel='', tags=[]):
+        new_entry = (driver_id, orig, dest, time,
                      days[0], days[1], days[2], days[3], days[4], seats_offered, anouncements, chat_channel)
         self.c.execute("""
                         INSERT INTO rides 
-                        (ride_id, driver_id, orig, dest, time, mon, thu, wed, tue, fri, seats_offered, anouncements, chat_channel)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        (driver_id, orig, dest, time, mon, thu, wed, tue, fri, seats_offered, anouncements, chat_channel)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                         """, new_entry)
+        ride_id=self.c.lastrowid;
         for t in tags:
             self.add_tag_to_ride(ride_id, t.tag_id)
         self.add_user_to_ride(driver_id, ride_id)
         self.__commit()
 
     def add_request(self, request_id, ride_id, driver_id, rider_id, message=''):
-        new_entry = (request_id, ride_id, driver_id, rider_id, message)
+        new_entry = (ride_id, driver_id, rider_id, message)
         self.c.execute("""
-                        INSERT INTO requests (request_id, ride_id, driver_id, rider_id, message)
-                        VALUES (?, ?, ?, ?, ?)
+                        INSERT INTO requests (ride_id, driver_id, rider_id, message)
+                        VALUES (?, ?, ?, ?)
                         """, new_entry)
         self.__commit()
 

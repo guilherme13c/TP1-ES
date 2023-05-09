@@ -76,7 +76,7 @@ async def register_api(register_form_data: RegisterFormData):
                             "Register failed. Email already in use")
     else:
         access_token = create_access_token(
-        data={"sub": user.email}, expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
+        data={"sub": register_form_data.email}, expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
         return {
             "access_token": access_token,
             "token_type": "bearer",
@@ -100,7 +100,7 @@ async def get_rides_api(credentials: HTTPAuthorizationCredentials = Depends(oaut
 async def add_ride_api(ride_form_data: RideFormData, credentials: HTTPAuthorizationCredentials = Depends(oauth2_scheme)):
     try:
         payload = verify_jwt(credentials)
-        rides = db.add_ride(1, ride_form_data.driver_id, ride_form_data.orig, ride_form_data.dest,
+        rides = db.add_ride(ride_form_data.driver_id, ride_form_data.orig, ride_form_data.dest,
                             ride_form_data.time, ride_form_data.days, ride_form_data.seats_offered)
         return {
             "rides": rides
