@@ -1,0 +1,33 @@
+#root {
+    width: 100%;
+}
+
+.rides-page {
+    margin: 10px;
+}
+
+.navbar {
+    background-color: aquamarine;
+    border-radius: 7px;
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.right {
+    margin-left: auto;
+}
+
+.left {
+    margin-right: auto;
+}
+
+.navbar>ul {
+    list-style: none;
+}
+
+.navbar>ul>li>a {
+    text-decoration: none;
+    color: black;
+    font-weight: 500;
+}
