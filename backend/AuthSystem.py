@@ -28,12 +28,12 @@ def authenticateUser(email: str, password: str):
         return None
 
 
-def registerUser(email: str, password: str, name: str, gender: str, course: str, neighborhood: str):
+def registerUser(email: str, password: str, name: str, gender: str, course: str, neighbourhood: str):
     if db.get_user(email):
         # email already registered
         return None
     db.add_user(email, pwd_context.hash(password),
-                name, gender, course, neighborhood)
+                name, gender, course, neighbourhood)
     return True
 
 

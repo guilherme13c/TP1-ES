@@ -26,7 +26,7 @@ class DatabaseInterface:
                         name TEXT,
                         gender TEXT,
                         course TEXT,
-                        neighborhood TEXT)
+                        neighbourhood TEXT)
                         """)
 
         # create companions table
@@ -105,16 +105,16 @@ class DatabaseInterface:
     #### Adding data to database ####
     #################################
 
-    def add_user(self, email, password, name, gender, course, neighborhood):
-        new_entry = (email, password, name, gender, course, neighborhood)
+    def add_user(self, email, password, name, gender, course, neighbourhood):
+        new_entry = (email, password, name, gender, course, neighbourhood)
         self.c.execute(
-            "INSERT INTO users (email, password, name, gender, course, neighborhood) VALUES (?, ?, ?, ?, ?, ?)", new_entry)
+            "INSERT INTO users (email, password, name, gender, course, neighbourhood) VALUES (?, ?, ?, ?, ?, ?)", new_entry)
         self.__commit()
 
     def update_user(self, email, name, gender, course, neighbourhood):
         new_entry = (name, gender, course, neighbourhood, email)
         self.c.execute(
-            "UPDATE users SET name=?,gender=?,course=?,neighborhood=? where email = ?", new_entry)
+            "UPDATE users SET name=?,gender=?,course=?,neighbourhood=? where email = ?", new_entry)
         self.__commit()
         return User(name, 0, name, gender, course, neighbourhood)
 
@@ -194,7 +194,7 @@ class DatabaseInterface:
 
     def get_companions_from_user(self, email):
         self.c.execute("""
-                        SELECT name, gender, course, neighborhood, counter 
+                        SELECT name, gender, course, neighbourhood, counter 
                         FROM users
                         LEFT JOIN companions ON email=user_1 
                         WHERE user_2=?
@@ -202,7 +202,7 @@ class DatabaseInterface:
         q1 = self.c.fetchall()
         l1 = [User(*q) for q in q1]
         self.c.execute("""
-                        SELECT name, gender, course, neighborhood, counter 
+                        SELECT name, gender, course, neighbourhood, counter 
                         FROM users
                         LEFT JOIN companions ON email=user_2 
                         WHERE user_1=?
@@ -269,9 +269,9 @@ class DatabaseInterface:
 
     def update_user_data(self, user):
         new_data = (user.password, user.name, user.gender,
-                    user.course, user.neighborhood, user.email)
+                    user.course, user.neighbourhood, user.email)
         self.c.execute(
-            "UPDATE companions SET password=?, name=?, gender=?, course=?, neighborhood=?  WHERE email=?", new_data)
+            "UPDATE companions SET password=?, name=?, gender=?, course=?, neighbourhood=?  WHERE email=?", new_data)
         self.__commit()
 
     ###################################

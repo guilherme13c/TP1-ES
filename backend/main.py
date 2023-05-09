@@ -50,8 +50,10 @@ class RideFormData(BaseModel):
     seats_offered: int
     driver_id: str
 
+
 class GetUserData(BaseModel):
     email: str
+
 
 class EditUserData(BaseModel):
     email: str
@@ -59,6 +61,7 @@ class EditUserData(BaseModel):
     gender: str
     course: str
     neighbourhood: str
+
 
 @app.post('/login')
 async def login_api(login_form_data: LoginFormData):
@@ -87,7 +90,7 @@ async def register_api(register_form_data: RegisterFormData):
                             "Register failed. Email already in use")
     else:
         access_token = create_access_token(
-        data={"sub": register_form_data.email}, expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
+            data={"sub": register_form_data.email}, expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
         return {
             "access_token": access_token,
             "token_type": "bearer",
@@ -112,14 +115,15 @@ async def add_ride_api(ride_form_data: RideFormData, credentials: HTTPAuthorizat
     try:
         payload = verify_jwt(credentials)
         db.add_ride(ride_form_data.driver_id, ride_form_data.orig, ride_form_data.dest,
-                            ride_form_data.time, ride_form_data.days, ride_form_data.seats_offered)
+                    ride_form_data.time, ride_form_data.days, ride_form_data.seats_offered)
         return {
-            
+
         }
-        
+
     except HTTPException as e:
         raise e
-    
+
+
 @app.post('/get_user')
 async def get_user_api(json_email: GetUserData, credentials: HTTPAuthorizationCredentials = Depends(oauth2_scheme)):
     try:
@@ -134,13 +138,14 @@ async def get_user_api(json_email: GetUserData, credentials: HTTPAuthorizationCr
         }
     except HTTPException as e:
         raise e
-    
+
 
 @app.post('/edit_user')
 async def edit_user_api(edit_user_data: EditUserData, credentials: HTTPAuthorizationCredentials = Depends(oauth2_scheme)):
     try:
         payload = verify_jwt(credentials)
-        user = db.update_user(edit_user_data.email,edit_user_data.name,edit_user_data.gender,edit_user_data.course,edit_user_data.neighbourhood)
+        user = db.update_user(edit_user_data.email, edit_user_data.name,
+                              edit_user_data.gender, edit_user_data.course, edit_user_data.neighbourhood)
         return {
             "email": user.email,
             "name": user.name,
@@ -151,16 +156,20 @@ async def edit_user_api(edit_user_data: EditUserData, credentials: HTTPAuthoriza
     except HTTPException as e:
         raise e
 
+
 @app.post('/get_my_rides')
-async def get_my_rides_api(email: str, credentials: HTTPAuthorizationCredentials = Depends(oauth2_scheme)):
+async def get_my_rides_api(json_email: GetUserData, credentials: HTTPAuthorizationCredentials = Depends(oauth2_scheme)):
     try:
         payload = verify_jwt(credentials)
-        user = User(email,0,0,0,0,0)
+        user = User(json_email.email, 0, 0, 0, 0, 0)
         user_rides = get_user_rides(user)
         return {
+            "userData": {
+                "email": json_email.email
+            },
             "userRides": user_rides
         }
-        
+
     except HTTPException as e:
         raise e
 

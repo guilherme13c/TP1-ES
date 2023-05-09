@@ -19,9 +19,7 @@ function Profile() {
 
         if (response.ok) {
             const data = await response.json();
-            console.log("1:\t",JSON.stringify(data));
-            data.neighbourhood=data.neighborhood;
-            delete data.neighborhood;
+            console.log(JSON.stringify(data));
             setFormData(data);
         } else {
             throw new Error("register API request failed.")

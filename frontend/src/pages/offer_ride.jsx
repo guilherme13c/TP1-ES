@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import FormWrapper from '../components/FormWrapper';
+import Navbar from '../components/NavBar';
 
 function OfferRide() {
-    const [formData, setFormData] = useState({orig: "", dest: "", time: "", mon: false, tue: false, wed: false, thu:false, fri:false, seats_offered:0});
+    const [formData, setFormData] = useState({orig: "", dest: "", time: "", mon: false, tue: false, wed: false, thu:false, fri:false, seats_offered:0, driver_id: ""});
 
     function handleChange(event) {
         const { name, value } = event.target;
@@ -40,9 +41,9 @@ function OfferRide() {
             });
 
             if (response.ok) {
-                alert("Carona oferecida! Acompanhe-a na sua página de perfil.");
                 const data = await response.json();
-                console.log(data)
+                console.log(JSON.stringify(data))
+                alert("Carona oferecida! Acompanhe-a na sua página de perfil.");
             } else {
                 throw new Error("login API request failed.")
             }
@@ -52,45 +53,48 @@ function OfferRide() {
     }
 
     return (
-        <FormWrapper>
-            <form onSubmit={handleSubmit}>
-                <label><span>Origem</span>
-                    <input type='text' name='orig' value={formData.orig} onChange={handleChange}/>
-                </label>
-                <label><span>Destino</span>
-                    <input type='text' name='dest' value={formData.dest} onChange={handleChange}/>
-                </label>
-                <label><span>Horário</span>
-                    <input type='text' name='time' value={formData.time} onChange={handleChange}/>
-                </label>
-                <label><span>Assentos</span>
-                    <input type='number' name='seats_offered' value={formData.seats_offered} onChange={handleChange}/>
-                </label>
-                <div className="label"><span>Dias</span>
-                    <label className="check">
-                        <input name='mon' type='checkbox' value={formData.mon} onChange={handleCheck}/>
-                        <span>Segunda-feira</span>
+        <div>
+            <Navbar/>
+            <FormWrapper>
+                <form onSubmit={handleSubmit}>
+                    <label><span>Origem</span>
+                        <input type='text' name='orig' value={formData.orig} onChange={handleChange}/>
                     </label>
-                    <label className="check">
-                        <input name='tue' type='checkbox' value={formData.tue} onChange={handleCheck}/>
-                        <span>Terça-feira</span>
+                    <label><span>Destino</span>
+                        <input type='text' name='dest' value={formData.dest} onChange={handleChange}/>
                     </label>
-                    <label className="check">
-                        <input name='wed' type='checkbox' value={formData.wed} onChange={handleCheck}/>
-                        <span>Quarta-feira</span>
+                    <label><span>Horário</span>
+                        <input type='text' name='time' value={formData.time} onChange={handleChange}/>
                     </label>
-                    <label className="check">
-                        <input name='thu' type='checkbox' value={formData.thu} onChange={handleCheck}/>
-                        <span>Quinta-feira</span>
+                    <label><span>Assentos</span>
+                        <input type='number' name='seats_offered' value={formData.seats_offered} onChange={handleChange}/>
                     </label>
-                    <label className="check">
-                        <input name='fri' type='checkbox' value={formData.fri} onChange={handleCheck}/>
-                        <span>Sexta-feira</span>
-                    </label>
-                </div>
-                <button type='submit'>Criar carona</button>
-            </form>
-        </FormWrapper>
+                    <div className="label"><span>Dias</span>
+                        <label className="check">
+                            <input name='mon' type='checkbox' value={formData.mon} onChange={handleCheck}/>
+                            <span>Segunda-feira</span>
+                        </label>
+                        <label className="check">
+                            <input name='tue' type='checkbox' value={formData.tue} onChange={handleCheck}/>
+                            <span>Terça-feira</span>
+                        </label>
+                        <label className="check">
+                            <input name='wed' type='checkbox' value={formData.wed} onChange={handleCheck}/>
+                            <span>Quarta-feira</span>
+                        </label>
+                        <label className="check">
+                            <input name='thu' type='checkbox' value={formData.thu} onChange={handleCheck}/>
+                            <span>Quinta-feira</span>
+                        </label>
+                        <label className="check">
+                            <input name='fri' type='checkbox' value={formData.fri} onChange={handleCheck}/>
+                            <span>Sexta-feira</span>
+                        </label>
+                    </div>
+                    <button type='submit'>Criar carona</button>
+                </form>
+            </FormWrapper>
+        </div>
     );
 }
 

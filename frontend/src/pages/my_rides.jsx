@@ -22,10 +22,10 @@ function MyRides() {
 
             const json = await response.json();
             console.log(JSON.stringify(json));
-            setMyRides(json['myRides'])
+            setMyRides(json['userRides'])
         }
         fetchMyRides()
-        console.log("myRides: ", myRides);
+        console.log("userRides: ", myRides);
     }, []);
 
     return (
