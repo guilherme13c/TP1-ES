@@ -2,12 +2,12 @@ import React from "react";
 
 function Navbar() {
   return (
-    <nav>
+    <nav className="navbar">
       <ul>
-        <li>
+        <li className="right">
           <a href="/rides">Caronas</a>
         </li>
-        <li>
+        <li className="left">
           <a href="/profile">Perfil</a>
         </li>
       </ul>

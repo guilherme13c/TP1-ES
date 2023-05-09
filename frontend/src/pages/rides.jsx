@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import RideTable from "../components/RideTable";
 import Navbar from "../components/NavBar";
+import "../rides.css"
 
 function Rides() {
     const [rides, setRides] = useState([]);

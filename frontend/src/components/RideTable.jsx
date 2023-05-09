@@ -2,7 +2,7 @@ import React from "react";
 
 
 function DayWrapper(props) {
-  const days = ["D", "S", "T", "Q", "Q", "S", "S"];
+  const days = ["S", "T", "Q", "Q", "S"];
 
   const dayStyles = props.days.map((day, index) => {
     return <div key={index} style={{backgroundColor: day ? 'green' : 'red'}}>{days[index]}</div>
@@ -16,11 +16,11 @@ function RideTableRow(ride) {
 
     return (
         <tr onClick={navigateToRide} className="ride-table-row">
-            <td>{ride.orig}</td>
-            <td>{ride.dest}</td>
-            <td>{ride.time}</td>
+            <td>Origem: {ride.orig}</td>
+            <td>Destino: {ride.dest}</td>
+            <td>Horário: {ride.time}</td>
             <td><DayWrapper days={ ride.days }/></td>
-            <td>{ride.seats_offered}</td>
+            <td>Assentos disponíveis: {ride.seats_offered}</td>
         </tr>
     )
 }
