@@ -100,11 +100,29 @@ async def get_rides_api(credentials: HTTPAuthorizationCredentials = Depends(oaut
 async def add_ride_api(ride_form_data: RideFormData, credentials: HTTPAuthorizationCredentials = Depends(oauth2_scheme)):
     try:
         payload = verify_jwt(credentials)
-        rides = db.add_ride(ride_form_data.driver_id, ride_form_data.orig, ride_form_data.dest,
+        db.add_ride(ride_form_data.driver_id, ride_form_data.orig, ride_form_data.dest,
                             ride_form_data.time, ride_form_data.days, ride_form_data.seats_offered)
         return {
-            "rides": rides
+            
         }
+        
+    except HTTPException as e:
+        raise e
+
+@app.get('/user_info')
+async def get_user_info(credentials: HTTPAuthorizationCredentials = Depends(get_current_user)):
+    try:
+        payload = verify_jwt(credentials)
+        user_email = get_current_user()["email"]
+        user = db.get_user(user_email)
+        return {
+            "email": user.email,
+            "name": user.name,
+            "gender": user.gender,
+            "course": user.course,
+            "neighbourhood": user.neighbourhood
+        }
+        
     except HTTPException as e:
         raise e
 
