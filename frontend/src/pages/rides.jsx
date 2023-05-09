@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import RideTable from "../components/RideTable";
 
 function Rides() {
-    const [data, setData] = useState([]);
+    const [rides, setRides] = useState([]);
 
     useEffect(() => {
         async function fetchRides() {
@@ -17,14 +17,19 @@ function Rides() {
             });
 
             const json = await response.json();
-            setData(json);
+            console.log(json['rides'])
+            setRides(json['rides']);
         }
         fetchRides();
+        console.log("data:", rides)
     }, []);
+
 
     return (
         <div className="rides-page">
-            {RideTable(data)}
+            {RideTable(rides)}
+            <hr />
+            <button onClick={() => {window.location.href="/offer_ride"}} className="create-ride">Criar uma nova carona</button>
         </div>
     );
 }
