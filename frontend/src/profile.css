@@ -6,9 +6,16 @@ body{
     background-color: #efefef;
 }
 
+#root {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .prof{
     display: flex;
     flex-direction: row;
+    margin: auto;
 }
 
 .profile_pic{
