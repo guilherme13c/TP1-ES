@@ -49,6 +49,9 @@ class RideFormData(BaseModel):
     seats_offered: int
     driver_id: str
 
+class GetUserData(BaseModel):
+    email: str
+
 @app.post('/login')
 async def login_api(login_form_data: LoginFormData):
     user = authenticateUser(
@@ -107,6 +110,16 @@ async def add_ride_api(ride_form_data: RideFormData, credentials: HTTPAuthorizat
         }
     except HTTPException as e:
         raise e
+    
+@app.post('/get_user')
+async def get_user_api(json_email: GetUserData, credentials: HTTPAuthorizationCredentials = Depends(oauth2_scheme)):
+    try:
+        payload = verify_jwt(credentials)
+        user = db.get_user(json_email.email)
+        return user
+    except HTTPException as e:
+        raise e
+
 
 if __name__ == "__main__":
     uvicorn.run("main:app", port=8080, log_level='info')

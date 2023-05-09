@@ -67,20 +67,25 @@ function OfferRide() {
                     <input type='number' name='seats_offered' value={formData.seats_offered} onChange={handleChange}/>
                 </label>
                 <div className="label"><span>Dias</span>
-                    <label className="check"><span>Segunda-feira</span>
+                    <label className="check">
                         <input name='mon' type='checkbox' value={formData.mon} onChange={handleCheck}/>
+                        <span>Segunda-feira</span>
                     </label>
-                    <label className="check"><span>Terça-feira</span>
+                    <label className="check">
                         <input name='tue' type='checkbox' value={formData.tue} onChange={handleCheck}/>
+                        <span>Terça-feira</span>
                     </label>
-                    <label className="check"><span>Quarta-feira</span>
+                    <label className="check">
                         <input name='wed' type='checkbox' value={formData.wed} onChange={handleCheck}/>
+                        <span>Quarta-feira</span>
                     </label>
-                    <label className="check"><span>Quinta-feira</span>
+                    <label className="check">
                         <input name='thu' type='checkbox' value={formData.thu} onChange={handleCheck}/>
+                        <span>Quinta-feira</span>
                     </label>
-                    <label className="check"><span>Sexta-feira</span>
+                    <label className="check">
                         <input name='fri' type='checkbox' value={formData.fri} onChange={handleCheck}/>
+                        <span>Sexta-feira</span>
                     </label>
                 </div>
                 <button type='submit'>Criar carona</button>

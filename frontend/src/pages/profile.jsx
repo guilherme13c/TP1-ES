@@ -1,8 +1,36 @@
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import "../profile.css";
 
 function Profile() {
-    const [formData, setFormData] = useState({email: "", person_name: "", gender: "", course: "", neighbourhood: "", password: "", passwordConfirm: ""});
+    const [formData, setFormData] = useState({email: null, name: "", gender: "", course: "", neighbourhood: "", password: "", passwordConfirm: ""});
+    const navigate = useNavigate();
+
+    async function getUser(){
+        const token = localStorage.getItem('access_token');
+        const email = localStorage.getItem('email');
+
+        const response = await fetch("http://127.0.0.1:8080/get_user", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({email: email})
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log(data);
+            delete data.password;
+            data.neighbourhood=data.neighborhood;
+            delete data.neighborhood;
+            setFormData(data);
+        } else {
+            throw new Error("register API request failed.")
+        }
+    }
+    if(formData.email==null) getUser();
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -10,20 +38,7 @@ function Profile() {
     }
 
     const handleSubmit = async (event) => {
-        if (formData.password !== formData.passwordConfirm) {
-            alert("A senha difere da confirmação!")
-            return
-        }
-        if (formData.password.length < 8) {
-            alert("A senha deve ter pelo menos 8 caracteres")
-            return
-        }
-
         event.preventDefault();
-        let fd2={...formData};
-        delete fd2.passwordConfirm;
-        fd2.name=formData.person_name;
-        delete fd2.person_name;
 
         try {
             const response = await fetch("http://127.0.0.1:8080/register", {
@@ -31,16 +46,12 @@ function Profile() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(fd2)
+                body: JSON.stringify(formData)
             });
 
             if (response.ok) {
                 const data = await response.json();
-
                 console.log(data);
-                localStorage.setItem('access_token', data.access_token)
-                localStorage.setItem('email', data.email)
-                window.location.href = '/offer_ride'
             } else {
                 throw new Error("register API request failed.")
             }
@@ -53,17 +64,14 @@ function Profile() {
         <div className='prof'>
             <div className='left'>
                 <h2>Seu perfil</h2>
-                <img src={require("../default.jpg")} class='profile_pic' />
-                <button type='submit' class="button">Gerenciar caronas</button>
-                <button type='submit' class="button">Oferecer carona</button>
+                <img src={require("../default.jpg")} className='profile_pic' />
+                <button onClick={function(){navigate("/home");}} className="button">Gerenciar caronas</button>
+                <button onClick={function(){navigate("/offer_ride");}} className="button">Oferecer carona</button>
             </div>
             <div className='form'>
             <form onSubmit={handleSubmit}>
                 <label><span>Nome</span>
-                    <input name='person_name' type='text' onChange={handleChange} value={formData.person_name}/>
-                </label>
-                <label><span>Email</span>
-                    <input name='email' type='text' onChange={handleChange} value={formData.email}/>
+                    <input name='name' type='text' onChange={handleChange} value={formData.name}/>
                 </label>
                 <label><span>Sexo</span>
                     <div onChange={handleChange}>

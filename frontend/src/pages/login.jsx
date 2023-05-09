@@ -47,8 +47,8 @@ function Login() {
                     <input type='password' name='password' value={formData.password} onChange={handleChange}/>
                 </label>
                 <button type='submit'>Entrar</button>
+                <p className="small">Ainda não possui conta? <a href="/register">Cadastre-se</a></p>
             </form>
-            <p className="small">Ainda não possui conta? <a href="/register">Cadastre-se</a></p>
         </FormWrapper>
     );
 }
