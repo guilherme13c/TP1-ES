@@ -1,0 +1,39 @@
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height:100vh;
+    background-color: #f7f7f7;
+}
+
+.prof{
+    display: flex;
+    flex-direction: row;
+}
+
+.profile_pic{
+    border-radius: 50%;
+    width:124px;
+    display:block;
+    margin-bottom:28px;
+    border:1px solid black;
+}
+
+.left{
+    padding: 44px 49px 49px;
+    background-color: #ffffff;
+    margin-right: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.left button{
+    margin: 16px 0 0 0;
+    width:100%;
+}
+
+.left h2{
+    margin-top:0;
+    margin-bottom:34px;
+}

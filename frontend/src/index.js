@@ -8,6 +8,7 @@ import Login from "./pages/login";
 import Home from "./pages/home";
 import OfferRide from "./pages/offer_ride";
 import Rides from "./pages/rides";
+import Profile from "./pages/profile";
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="/register/" element={<Register />}/>
         <Route path="/offer_ride/" element={<OfferRide />} />
         <Route path="/rides/" element={<Rides />}/>
+        <Route path="/profile/" element={<Profile />}/>
       </Routes>
     </BrowserRouter>
   );
