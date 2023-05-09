@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from "react-router-dom";
 import "../profile.css";
 
 function Profile() {
-    const [formData, setFormData] = useState({email: null, name: "", gender: "", course: "", neighbourhood: "", password: "", passwordConfirm: ""});
-    const navigate = useNavigate();
+    const [formData, setFormData] = useState({email: "", name: "", gender: "", course: "", neighbourhood: "", password: "", passwordConfirm: ""});
 
     async function getUser(){
         const token = localStorage.getItem('access_token');
@@ -66,9 +64,9 @@ function Profile() {
         <div className='prof'>
             <div className='left'>
                 <h2>Seu perfil</h2>
-                <img src={require("../default.jpg")} className='profile_pic' />
-                <button onClick={function(){navigate("/");}} className="button">Gerenciar caronas</button>
-                <button onClick={function(){navigate("/offer_ride");}} className="button">Oferecer carona</button>
+                <img src={require("../default.jpg")} className='profile_pic' alt='profile-pic'/>
+                <button onClick={() => window.location.href="/my_rides"} className="button">Gerenciar caronas</button>
+                <button onClick={() => window.location.href="/offer_ride"} className="button">Oferecer carona</button>
             </div>
             <div className='form'>
             <form onSubmit={handleSubmit}>
@@ -78,11 +76,11 @@ function Profile() {
                 <label><span>Sexo</span>
                     <div onChange={handleChange}>
                         <label className="check">
-                            <input name='gender' type='radio' value='M' id='Male' checked={formData.gender=='M'}/>
+                            <input name='gender' type='radio' value='M' id='Male' checked={formData.gender==='M'}/>
                             <span>Masculino</span>
                         </label>
                         <label className="check">
-                            <input name='gender' type='radio' value='F' id='Female' checked={formData.gender=='F'}/>
+                            <input name='gender' type='radio' value='F' id='Female' checked={formData.gender==='F'}/>
                             <span>Feminino</span>
                         </label>
                     </div>

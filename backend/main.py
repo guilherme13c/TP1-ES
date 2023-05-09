@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from AuthSystem import *
 from DatabaseInterface import *
+from RideControl import *
 from typing import List
 
 app = FastAPI()
@@ -147,14 +148,25 @@ async def get_user_api(json_email: GetUserData, credentials: HTTPAuthorizationCr
     
 
 @app.post('/edit_user')
-async def edit_user_api(eud: EditUserData, credentials: HTTPAuthorizationCredentials = Depends(oauth2_scheme)):
+async def edit_user_api(edit_user_data: EditUserData, credentials: HTTPAuthorizationCredentials = Depends(oauth2_scheme)):
     try:
         payload = verify_jwt(credentials)
-        user = db.update_user(eud.email,eud.name,eud.gender,eud.course,eud.neighbourhood)
+        user = db.update_user(edit_user_data.email,edit_user_data.name,edit_user_data.gender,edit_user_data.course,edit_user_data.neighbourhood)
         return user
     except HTTPException as e:
         raise e
     
+@app.get('/get_my_rides')
+async def get_my_rides_api(email: str = Depends(get_current_user)):
+    try:
+        user = User(get_current_user(),0,0,0,0,0)
+        user_rides = get_user_rides(user)
+        return {
+            "userRides": user_rides
+        }
+        
+    except HTTPException as e:
+        raise e
 
 if __name__ == "__main__":
     uvicorn.run("main:app", port=8080, log_level='info')

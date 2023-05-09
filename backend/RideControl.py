@@ -1,5 +1,6 @@
 import DatabaseInterface
 from DataStructures import *
+from typing import List
 
 db = DatabaseInterface()
 
@@ -19,14 +20,14 @@ def add_rider_to_ride(ride: Ride, email: str):
 def remove_rider_from_ride(ride: Ride, email: str):
     db.remove_user_from_ride(ride.ride_id, email)
 
-def add_ride_tags(ride: Ride, tags: list[Tag]):
+def add_ride_tags(ride: Ride, tags: List[Tag]):
     for t in tags:
         if t not in ride.tags:
             db.add_tag_to_ride(ride.ride_id, t.tag_id)
             ride.tags.append(t)
     return ride
 
-def remove_ride_tags(ride: Ride, tags: list[Tag]):
+def remove_ride_tags(ride: Ride, tags: List[Tag]):
     for t in tags:
         if t in ride.tags:
             db.remove_tag_from_ride(ride.ride_id, t.tag_id)
