@@ -41,10 +41,12 @@ function Profile() {
         event.preventDefault();
 
         try {
-            const response = await fetch("http://127.0.0.1:8080/register", {
+            const token = localStorage.getItem('access_token');
+            const response = await fetch("http://127.0.0.1:8080/edit_user", {
                 method: "POST",
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify(formData)
             });

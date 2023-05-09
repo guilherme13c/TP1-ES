@@ -52,6 +52,13 @@ class RideFormData(BaseModel):
 class GetUserData(BaseModel):
     email: str
 
+class EditUserData(BaseModel):
+    email: str
+    name: str
+    gender: str
+    course: str
+    neighbourhood: str
+
 @app.post('/login')
 async def login_api(login_form_data: LoginFormData):
     user = authenticateUser(
@@ -137,7 +144,17 @@ async def get_user_api(json_email: GetUserData, credentials: HTTPAuthorizationCr
         return user
     except HTTPException as e:
         raise e
+    
 
+@app.post('/edit_user')
+async def edit_user_api(eud: EditUserData, credentials: HTTPAuthorizationCredentials = Depends(oauth2_scheme)):
+    try:
+        payload = verify_jwt(credentials)
+        user = db.update_user(eud.email,eud.name,eud.gender,eud.course,eud.neighbourhood)
+        return user
+    except HTTPException as e:
+        raise e
+    
 
 if __name__ == "__main__":
     uvicorn.run("main:app", port=8080, log_level='info')

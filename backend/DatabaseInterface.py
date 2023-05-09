@@ -111,6 +111,12 @@ class DatabaseInterface:
             "INSERT INTO users (email, password, name, gender, course, neighborhood) VALUES (?, ?, ?, ?, ?, ?)", new_entry)
         self.__commit()
 
+    def update_user(self, email, name, gender, course, neighborhood):
+        new_entry = (name, gender, course, neighborhood, email)
+        self.c.execute(
+            "UPDATE users SET name=?,gender=?,course=?,neighborhood=? where email = ?", new_entry)
+        self.__commit()
+
     def __count_new_companions(self, user_id, ride_id):
 
         # add each user already in ride to companions
