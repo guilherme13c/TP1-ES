@@ -90,7 +90,10 @@ function Ride() {
                                 <span>Sexta-feira</span>
                             </label>
                         </div>
-                        <button className="delete-ride button" onClick={handleRideDelete}>Deletar</button>
+                        {rideData.driver_id === userEmail
+                            ? <button className="delete-ride button" onClick={handleRideDelete}>Deletar</button>
+                            : null
+                        }
                     </div>
                     {/* <ul>
                         <li>Origem: {rideData.orig}</li>

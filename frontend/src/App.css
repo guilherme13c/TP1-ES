@@ -39,7 +39,7 @@ code {
 }
 
 .form .check:last-child{
-  margin-bottom:-9px;
+  margin-bottom:-4px;
 }
 
 .form label>span,.form .label>span{
@@ -83,6 +83,10 @@ code {
 }
 
 .form button:last-child{
+  margin-bottom: 0;
+}
+
+.form label:last-child,.form .label:last-child{
   margin-bottom: 0;
 }
 
