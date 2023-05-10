@@ -1,17 +1,56 @@
-#root {
-    width: 100%;
+.rides-outer{
+    min-height:100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-.rides-page {
-    margin: 10px;
+.rides-page>div{
+    padding: 44px 49px 49px;
+    /* background-color: white; */
+    min-height: 260px;
+    min-width: 343px;
+    display: flex;
+    flex-direction: column;
+}
+
+.rides-table,.empty-table{
+    flex-grow: 1;
+}
+
+.rides-page p{
+    margin:0;
+}
+
+.rides-page button{
+    margin: 35px auto 0;
+    display: block;
+}
+
+.rides-page h2{
+    margin-top:0;
+    margin-bottom:34px;
 }
 
 .navbar {
     background-color: aquamarine;
-    border-radius: 7px;
-    display: inline-flex;
-    justify-content: space-between;
+    display: flex;
+    justify-content: center;
     align-items: center;
+    width: 100vw;
+    height:62px;
+}
+
+.navbar h2{
+    margin:0;
+}
+
+.navbar>ul{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 460px;
+    padding: 0;
+    margin: 0;
 }
 
 .right {
@@ -19,7 +58,7 @@
 }
 
 .left {
-    margin-right: auto;
+    margin-left: 40px;
 }
 
 .navbar>ul {
@@ -30,4 +69,57 @@
     text-decoration: none;
     color: black;
     font-weight: 500;
+}
+
+body{
+    min-height:100vh;
+}
+
+.rides-page{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.rides-table{
+    max-width:800px;
+    margin: 0px -20px -20px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.ride-table-row{
+    padding:14px 19px 19px;
+    background-color: #ffffff;
+    margin: 0px 20px 20px 0px;
+    width:190px;
+    border-radius: 9px;
+    cursor: pointer;
+}
+
+.day_wrapper{
+    display: flex;
+    margin-top:6px;
+}
+
+.day_wrapper>*{
+    width: 23px;
+    height:23px;
+    text-align: center;
+    color:white;
+    border:1px solid #9f9f9f;
+}
+.day_wrapper>:not(:last-child){
+    border-right:none;
+}
+
+.green{
+    background-color:#00af00;
+}
+
+.red{
+    background-color:#bf0000;
 }

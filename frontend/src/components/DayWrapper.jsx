@@ -8,8 +8,8 @@ export default function DayWrapper(props) {
     }
 
     const dayStyles = props.days.map((day, index) => {
-        return <div key={index} style={{backgroundColor: day ? 'green' : 'red'}}>{days[index]}</div>
+        return <div key={index} className={ day ? 'green' : 'red'}>{days[index]}</div>
     });
 
-    return <div>{dayStyles}</div>;
+    return <>{dayStyles}</>;
 }

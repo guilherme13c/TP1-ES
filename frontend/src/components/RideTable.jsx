@@ -5,13 +5,13 @@ function RideTableRow(ride) {
     const navigateToRide = () => window.location.href = `/ride/${ride.ride_id}`;
 
     return (
-        <tr onClick={navigateToRide} className="ride-table-row">
-            <td>Origem: {ride.orig}</td>
-            <td>Destino: {ride.dest}</td>
-            <td>Horário: {ride.time}</td>
-            <td><DayWrapper days={ ride.days }/></td>
-            <td>Assentos disponíveis: {ride.seats_offered}</td>
-        </tr>
+        <div onClick={navigateToRide} className="ride-table-row">
+            <div><strong>Origem:</strong> {ride.orig}</div>
+            <div><strong>Destino:</strong> {ride.dest}</div>
+            <div><strong>Horário:</strong> {ride.time}</div>
+            <div><strong>Assentos disponíveis:</strong> {ride.seats_offered}</div>
+            <div className="day_wrapper"><DayWrapper days={ ride.days }/></div>
+        </div>
     )
 }
 
@@ -19,17 +19,17 @@ function RideTable(rides) {
     if (!rides || !rides.length) {
         return (
             <div className="empty-table">
-                <h2 className="empty-table-message">Não há caronas disponíveis.</h2>
+                <p className="empty-table-message">Não há caronas disponíveis.</p>
             </div>
         );
     }
 
     return (
-        <table className="rides-table">
-            <tbody>
+        <div className="rides-table">
+            {/* <tbody> */}
                 {rides && rides.map(ride => RideTableRow(ride))}
-            </tbody>
-        </table>
+            {/* </tbody> */}
+        </div>
     );
 }
 

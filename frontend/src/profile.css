@@ -2,7 +2,7 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
-    height:100vh;
+    min-height:100vh;
     background-color: #efefef;
 }
 
@@ -26,7 +26,7 @@ body{
     border:1px solid #7f7f7f;
 }
 
-.left{
+.prof .left{
     padding: 44px 49px 49px;
     background-color: #ffffff;
     margin-right: 24px;
@@ -35,12 +35,12 @@ body{
     align-items: center;
 }
 
-.left button{
+.prof .left button{
     margin: 16px 0 0 0;
     width:100%;
 }
 
-.left h2{
+.prof .left h2{
     margin-top:0;
     margin-bottom:34px;
 }
