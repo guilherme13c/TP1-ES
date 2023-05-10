@@ -38,6 +38,10 @@ code {
   align-items:start;
 }
 
+.form .check:last-child{
+  margin-bottom:-9px;
+}
+
 .form label>span,.form .label>span{
   font-weight: bold;
   margin-bottom: 4px;
@@ -55,13 +59,13 @@ code {
   margin-left: 4px;
 }
 
-.form input:not([type=radio]){
+.form input:not([type=radio]),.form input:not([type=checkbox]){
   font: inherit;
   padding: 4px 6px 3px;
   border:1px solid #bfbfbf;
 }
 
-.form input[type=radio]{
+.form input[type=radio],.form input[type=checkbox]{
   position: relative;
   top:2px;
 }
