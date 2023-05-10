@@ -29,12 +29,15 @@ function MyRides() {
     }, []);
 
     return (
-        <div className="my-rides-page">
+        <div className="rides-outer">
             <Navbar />
-            <h2 className="title">Minhas Corridas</h2>
-            {RideTable(myRides)}
-            <hr />
-            <button onClick={() => {window.location.href="/offer_ride"}} className="create-ride">Criar uma nova carona</button>
+            <div className="rides-page">
+                <div>
+                    <h2 className="title">Minhas Corridas</h2>
+                    {RideTable(myRides)}
+                    <button onClick={() => {window.location.href="/offer_ride"}} className="create-ride button">Criar uma nova carona</button>
+                </div>
+            </div>
         </div>
     );
 }

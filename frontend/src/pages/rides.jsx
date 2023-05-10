@@ -29,14 +29,14 @@ function Rides() {
 
     return (
         <div className="rides-outer">
-        <Navbar/>
-        <div className="rides-page">
-            <div>
-            <h2 className="title">Corridas disponíveis</h2>
-            {RideTable(rides)}
-            <button onClick={() => {window.location.href="/offer_ride"}} className="create-ride button">Criar uma nova carona</button>
+            <Navbar/>
+            <div className="rides-page">
+                <div>
+                    <h2 className="title">Corridas disponíveis</h2>
+                    {RideTable(rides)}
+                    <button onClick={() => {window.location.href="/offer_ride"}} className="create-ride button">Criar uma nova carona</button>
+                </div>
             </div>
-        </div>
         </div>
     );
 }

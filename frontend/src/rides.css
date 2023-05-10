@@ -8,7 +8,7 @@
     padding: 44px 49px 49px;
     /* background-color: white; */
     min-height: 260px;
-    min-width: 343px;
+    min-width: 332px;
     display: flex;
     flex-direction: column;
 }
@@ -91,12 +91,15 @@ body{
     justify-content: center;
 }
 
-.ride-table-row{
+.ride-table-row,.empty-table{
     padding:14px 19px 19px;
     background-color: #ffffff;
+    border-radius: 9px;
+}
+
+.ride-table-row{
     margin: 0px 20px 20px 0px;
     width:190px;
-    border-radius: 9px;
     cursor: pointer;
 }
 
