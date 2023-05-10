@@ -10,6 +10,7 @@ import OfferRide from "./pages/offer_ride";
 import Rides from "./pages/rides";
 import Profile from "./pages/profile";
 import MyRides from "./pages/my_rides";
+import Ride from "./pages/ride";
 
 export default function App() {
   return (
@@ -21,7 +22,8 @@ export default function App() {
         <Route path="/offer_ride/" element={<OfferRide />} />
         <Route path="/rides/" element={<Rides />}/>
         <Route path="/profile/" element={<Profile />} />
-        <Route path="/my_rides/" element={<MyRides/>} />
+        <Route path="/my_rides/" element={<MyRides />} />
+        <Route path="/ride/:ride_id" element={<Ride />} />
       </Routes>
     </BrowserRouter>
   );
