@@ -53,37 +53,38 @@ function Register() {
     return (
         <FormWrapper>
             <form onSubmit={handleSubmit}>
-                <label>Nome:
+                <label><span>Nome:</span>
                     <input name='person_name' type='text' onChange={handleChange} value={formData.person_name}/>
                 </label>
-                <label>Email:
+                <label><span>Email:</span>
                     <input name='email' type='text' onChange={handleChange} value={formData.email}/>
                 </label>
-                <label>Sexo:
-                    <div onChange={handleChange}>
-                        <label>Masculino
-                            <input name='gender' type='radio' value='M' id='Male'/>
-                        </label>
-                        <label>Feminino
-                            <input name='gender' type='radio' value='F' id='Female'/>
-                        </label>
-                    </div>
-                </label>
-                <label>Curso:
+                <div className="label" onChange={handleChange}>
+                    <span>Sexo</span>
+                    <label className="check">
+                        <input name='gender' type='radio' value='M' id='Male'/>
+                        <span>Masculino</span>
+                    </label>
+                    <label className="check">
+                        <input name='gender' type='radio' value='F' id='Female'/>
+                        <span>Feminino</span>
+                    </label>
+                </div>
+                <label><span>Curso:</span>
                     <input name='course' type='text' onChange={handleChange} value={formData.course}/>
                 </label>
-                <label>Bairro:
+                <label><span>Bairro:</span>
                     <input name='neighbourhood' type='text' onChange={handleChange} value={formData.neighbourhood}/>
                 </label>
-                <label>Senha:
+                <label><span>Senha:</span>
                     <input name='password' type='password' onChange={handleChange} value={formData.password}/>
                 </label>
-                <label>Confirme a senha:
+                <label><span>Confirme a senha:</span>
                     <input name='passwordConfirm' type='password' onChange={handleChange} value={formData.passwordConfirm}/>
                 </label>
                 <button type='submit'>Registrar</button>
+                <p className="small">Já possui uma conta? <a href='/login'>Entre!</a></p>
             </form>
-            <p>Já possui um conta? <a href='/login'>Entre!</a></p>
         </FormWrapper>
     );
 }
