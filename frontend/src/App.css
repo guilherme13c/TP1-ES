@@ -14,10 +14,10 @@ code {
 
 .wrapper{
   background-color: #efefef;
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 35px 0px;
 }
 
 .form{
