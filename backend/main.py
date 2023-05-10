@@ -207,6 +207,19 @@ async def delete_user(json_email: GetUserData, credentials: HTTPAuthorizationCre
 
     except HTTPException as e:
         raise e
+    
+@app.post('/delete_ride')
+async def delete_ride(json_ride_id: GetRide, credentials: HTTPAuthorizationCredentials = Depends(oauth2_scheme)):
+    try:
+        payload = verify_jwt(credentials)
+        db.delete_ride(json_ride_id.ride_id)
+        return {
+            "email": json_ride_id.ride_id
+        }
+
+    except HTTPException as e:
+        raise e    
+
 
 if __name__ == "__main__":
     uvicorn.run("main:app", port=8080, log_level='info')
