@@ -48,7 +48,7 @@ Feito utilizando React, Python (fastAPI) e MySql.
 - como responável por uma carona, gostaria de aceitar/rejeitar pedidos de users para participarem dela [5]
 ### Implementar interface gráfica (como usuário, gostaria de poder usar a aplicação por meio de uma interface gráfica simples)
 - Cadastro e Login de usuário [3]
--	Mostrar informações do usuário [3]
--	Mostrar caronas do usuário [2]
--	Mostrar amigos de carona do usuário [2]
--	Requisitar carona [3]
+- Mostrar informações do usuário [3]
+- Mostrar caronas do usuário [2]
+- Mostrar amigos de carona do usuário [2]
+- Requisitar carona [3]
