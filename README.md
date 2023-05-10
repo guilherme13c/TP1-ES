@@ -10,22 +10,19 @@ Feito utilizando React, Python (fastAPI) e MySql.
 
 # Backlog do Produto
 
-### Implementar classe User
-- registro de usuário
-- login de usuário
-- exclusão de usuário
-### Implementar classe Motorista
-- criação de caronas
-- edição de caronas
-- exclusão de caronas
-- gestão de participantes da carona (excluir e aceitar)
-### Implementar classe Caroneiro
-- visualizar caronas disponíveis
-- visualizar detalhes das caronas
-- comunicar com o motorista
-- ser notificado de alterações na carona
-- abandonar carona
-- ver no mapa por onde passam as caronas próximas a ele
+- como usuário, eu gostaria de poder registrar uma conta
+- como usuário, eu gostaria de poder fazer login na minha conta
+- como usuário, eu gostaria de deletar minha conta
+- como usuário, eu gostaria de criar uma carona
+- como usuário, eu gostaria de excluir uma carona
+- como responsável pela carona, eu gostaria de poder remover participantes de uma carona
+- como usuário, gostaria de visualizar caronas disponíveis
+- como usuário, eu gostaria de visualizar os detalhes de uma carona
+- como usuário, eu gostaria de poder me comunicar com os demais participantes de uma carona
+- como usuário, eu gostaria de ser notificado quando uma carona em que participo seja deletada
+- como usuário, eu gostaria de poder sair de uma carona
+- como usuário, eu gostaria de poder visualizar a rota da carona em um mapa
+- como responsável por uma carona, eu gostaria de criar uma rota em um mapa
 
 # Backlog do Sprint
 ### Tarefas técnicas
