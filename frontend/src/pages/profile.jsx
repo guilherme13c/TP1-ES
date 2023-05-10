@@ -61,7 +61,7 @@ function Profile() {
 
     const handleUserDelete = async (event) => {
         event.preventDefault();
-        if(!confirm("Tem certeza que deseja apagar a conta?")){
+        if(!window.confirm("Tem certeza que deseja apagar a conta?")){
             return;
         }
 
