@@ -30,6 +30,7 @@ function Login() {
                 window.location.href = '/rides'
                 localStorage.setItem('email', data.email)
             } else {
+                alert("Credenciais inválidas")
                 throw new Error("login API request failed.")
             }
         } catch (error) {

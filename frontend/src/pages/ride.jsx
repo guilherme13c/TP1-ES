@@ -11,7 +11,6 @@ function Ride() {
     useEffect(() => {
         async function fetchRide() {
             const token = localStorage.getItem('access_token');
-            console.log(ride_id)
 
             const response = await fetch("http://127.0.0.1:8080/get_ride", {
                 method: "POST",
@@ -30,9 +29,9 @@ function Ride() {
         console.log("rideData: ", rideData);
     }, []);
 
-    async function handleRequest() {
-        return;
-    }
+    // async function handleRequest() {
+    //     return;
+    // }
 
     return (
         <div className="ride-page">
@@ -44,7 +43,7 @@ function Ride() {
                     <li>Horário: {rideData.time}</li>
                     <li><DayWrapper days={rideData.days}/></li>
                     <li>Assentos disponíveis: {rideData.seats_offered}</li>
-                    <li><button className="request-button" onClick={handleRequest}>Pedir para entrar</button></li>
+                    {/* <li><button className="request-button" onClick={handleRequest}>Pedir para entrar</button></li> */}
                 </ul>
             </div>
         </div>

@@ -189,8 +189,20 @@ async def get_ride_api(json_ride_id: GetRide, credentials: HTTPAuthorizationCred
             "dest": ride.dest,
             "time": ride.time,
             "days": ride.days,
-            "seats_oferred": ride.seats_offered,
+            "seats_offered": ride.seats_offered,
             "driver_id": ride.driver_id
+        }
+
+    except HTTPException as e:
+        raise e
+
+@app.post('/delete_user')
+async def delete_user(json_email: GetUserData, credentials: HTTPAuthorizationCredentials = Depends(oauth2_scheme)):
+    try:
+        payload = verify_jwt(credentials)
+        db.delete_user(json_email.email)
+        return {
+            "email": json_email.email
         }
 
     except HTTPException as e:
