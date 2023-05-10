@@ -82,7 +82,7 @@ code {
   border:1px solid #ffffff;
 }
 
-.form .delete-ride{
+.form .delete,.button.delete{
   background-color: #da4136;
 }
 

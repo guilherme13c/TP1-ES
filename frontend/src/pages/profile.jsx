@@ -61,6 +61,9 @@ function Profile() {
 
     const handleUserDelete = async (event) => {
         event.preventDefault();
+        if(!confirm("Tem certeza que deseja apagar a conta?")){
+            return;
+        }
 
         try {
             const token = localStorage.getItem('access_token');
@@ -88,39 +91,41 @@ function Profile() {
     return (
         <div className='profile-page'>
             <Navbar/>
-            <div className='prof'>
-                <div className='left'>
-                    <h2>Seu perfil</h2>
-                    <img src={require("../default.jpg")} className='profile_pic' alt='profile-pic'/>
-                    <button onClick={() => window.location.href="/my_rides"} className="button">Gerenciar caronas</button>
-                    <button onClick={() => window.location.href="/offer_ride"} className="button">Oferecer carona</button>
-                </div>
-                <div className='form'>
-                    <form onSubmit={handleSubmit}>
-                        <label><span>Nome</span>
-                            <input name='name' type='text' onChange={handleChange} value={formData.name}/>
-                        </label>
-                        <label><span>Sexo</span>
-                            <div onChange={handleChange}>
-                                <label className="check">
-                                    <input name='gender' type='radio' value='M' id='Male' checked={formData.gender==='M'}/>
-                                    <span>Masculino</span>
-                                </label>
-                                <label className="check">
-                                    <input name='gender' type='radio' value='F' id='Female' checked={formData.gender==='F'}/>
-                                    <span>Feminino</span>
-                                </label>
-                            </div>
-                        </label>
-                        <label><span>Curso</span>
-                            <input name='course' type='text' onChange={handleChange} value={formData.course}/>
-                        </label>
-                        <label><span>Bairro</span>
-                            <input name='neighbourhood' type='text' onChange={handleChange} value={formData.neighbourhood}/>
-                        </label>
-                        <button type='submit'>Alterar</button>
-                        <button className='delete-button' onClick={handleUserDelete}>Apagar conta</button>
-                    </form>
+            <div className='wrapper'>
+                <div className='prof'>
+                    <div className='left'>
+                        <h2>Seu perfil</h2>
+                        <img src={require("../default.jpg")} className='profile_pic' alt='profile-pic'/>
+                        <button onClick={() => window.location.href="/my_rides"} className="button">Gerenciar caronas</button>
+                        <button onClick={() => window.location.href="/offer_ride"} className="button">Oferecer carona</button>
+                        <button className='delete button' onClick={handleUserDelete}>Apagar conta</button>
+                    </div>
+                    <div className='form'>
+                        <form onSubmit={handleSubmit}>
+                            <label><span>Nome</span>
+                                <input name='name' type='text' onChange={handleChange} value={formData.name}/>
+                            </label>
+                            <label><span>Sexo</span>
+                                <div onChange={handleChange}>
+                                    <label className="check">
+                                        <input name='gender' type='radio' value='M' id='Male' checked={formData.gender==='M'}/>
+                                        <span>Masculino</span>
+                                    </label>
+                                    <label className="check">
+                                        <input name='gender' type='radio' value='F' id='Female' checked={formData.gender==='F'}/>
+                                        <span>Feminino</span>
+                                    </label>
+                                </div>
+                            </label>
+                            <label><span>Curso</span>
+                                <input name='course' type='text' onChange={handleChange} value={formData.course}/>
+                            </label>
+                            <label><span>Bairro</span>
+                                <input name='neighbourhood' type='text' onChange={handleChange} value={formData.neighbourhood}/>
+                            </label>
+                            <button type='submit'>Alterar</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

@@ -91,7 +91,7 @@ function Ride() {
                             </label>
                         </div>
                         {rideData.driver_id === userEmail
-                            ? <button className="delete-ride button" onClick={handleRideDelete}>Deletar</button>
+                            ? <button className="delete button" onClick={handleRideDelete}>Deletar</button>
                             : null
                         }
                     </div>
