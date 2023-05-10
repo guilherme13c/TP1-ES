@@ -63,6 +63,10 @@ class EditUserData(BaseModel):
     neighbourhood: str
 
 
+class GetRide(BaseModel):
+    ride_id: str
+
+
 @app.post('/login')
 async def login_api(login_form_data: LoginFormData):
     user = authenticateUser(
@@ -168,6 +172,25 @@ async def get_my_rides_api(json_email: GetUserData, credentials: HTTPAuthorizati
                 "email": json_email.email
             },
             "userRides": user_rides
+        }
+
+    except HTTPException as e:
+        raise e
+
+
+@app.post('/get_ride')
+async def get_ride_api(json_ride_id: GetRide, credentials: HTTPAuthorizationCredentials = Depends(oauth2_scheme)):
+    try:
+        payload = verify_jwt(credentials)
+        ride = db.get_ride(json_ride_id.ride_id)
+        return {
+            "ride_id": json_ride_id.ride_id,
+            "orig": ride.orig,
+            "dest": ride.dest,
+            "time": ride.time,
+            "days": ride.days,
+            "seats_oferred": ride.seats_offered,
+            "driver_id": ride.driver_id
         }
 
     except HTTPException as e:

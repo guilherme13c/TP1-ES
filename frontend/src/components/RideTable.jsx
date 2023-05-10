@@ -1,15 +1,5 @@
 import React from "react";
-
-
-function DayWrapper(props) {
-  const days = ["S", "T", "Q", "Q", "S"];
-
-  const dayStyles = props.days.map((day, index) => {
-    return <div key={index} style={{backgroundColor: day ? 'green' : 'red'}}>{days[index]}</div>
-  });
-
-  return <div>{dayStyles}</div>;
-}
+import DayWrapper from "./DayWrapper";
 
 function RideTableRow(ride) {
     const navigateToRide = () => window.location.href = `/ride/${ride.ride_id}`;
