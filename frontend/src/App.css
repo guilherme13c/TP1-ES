@@ -82,6 +82,10 @@ code {
   border:1px solid #ffffff;
 }
 
+.form .delete-ride{
+  background-color: #da4136;
+}
+
 .form button:last-child{
   margin-bottom: 0;
 }
